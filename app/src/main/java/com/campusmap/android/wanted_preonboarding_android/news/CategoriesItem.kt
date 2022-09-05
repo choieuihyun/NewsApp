@@ -20,7 +20,7 @@ import retrofit2.Response
 import java.io.Serializable
 
 class CategoriesItem : Fragment() {
-
+//1
     private lateinit var binding: CategoriesItemBinding
     private lateinit var cateItemRecyclerView: RecyclerView
     private lateinit var itemId: Serializable
