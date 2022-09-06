@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.campusmap.android.wanted_preonboarding_android.R
 import com.campusmap.android.wanted_preonboarding_android.RetrofitClient
 import com.campusmap.android.wanted_preonboarding_android.databinding.TopnewsBinding
+import kotlinx.coroutines.*
+import okhttp3.internal.wait
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,6 +23,9 @@ class TopNews : Fragment() {
 
     private lateinit var binding: TopnewsBinding
     private lateinit var topNewsRecyclerView: RecyclerView
+    private lateinit var topNewsArrayList: MutableList<Article>
+
+
     private val topNewsAdapter by lazy {
         TopNewsAdapter()
     }
@@ -28,6 +33,10 @@ class TopNews : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+        Log.d("topNewsArray1", "topNewsArray1")
+
+        topNewsArrayList = ArrayList()
         Log.d("TAG", "onCreate")
     }
 
@@ -57,7 +66,21 @@ class TopNews : Fragment() {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }*/
 
+
+
         retrofitWork()
+
+        CoroutineScope(Dispatchers.IO).launch {
+
+            // 요게 코루틴보다 늦게하면 되는데
+            launch {
+                delay(2000) // 이렇게하는거 딱 봐도 안좋아보이는데 방법을 모르겠네.
+                Log.d("topNewsArray2", topNewsArrayList[0].toString())
+            }
+
+
+        }
+
 
     }
 
@@ -66,12 +89,13 @@ class TopNews : Fragment() {
 
         topNewsAdapter.setOnItemClickListener(object : TopNewsAdapter.OnItemClickListener {
             override fun onItemClick(v: View?, pos: Int) {
-                Log.d("TopNews","clicked")
+                CoroutineScope(Dispatchers.Main).launch {
+                    createFragment(TopNewsDetail.newInstance(topNewsArrayList[pos]))
+                    Log.d("TopNewsInCoroutine", topNewsArrayList[pos].toString())
+                }
             }
 
         })
-
-
 
     }
 
@@ -81,26 +105,44 @@ class TopNews : Fragment() {
         }
     }
 
-    private fun retrofitWork() {
+    private fun createFragment(view: Fragment) {
+        requireActivity()
+            .supportFragmentManager
+            .beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.topNews_container, view)
+            .commit()
+    }
+
+    private fun retrofitWork(){
         val service = RetrofitClient.topNewsService
 
         service.getTopNewsData(getString(R.string.api_key)).enqueue(object : Callback<TopNewsResponse> {
+
             override fun onResponse(
                 call: Call<TopNewsResponse>,
                 response: Response<TopNewsResponse>
             ) {
+
+
                 if(response.isSuccessful) {
                     Log.d("TAG", response.body().toString())
                     val result = response.body()?.articles
                     topNewsAdapter.submitList(result)
+                    for (element in result!!) {
+                        topNewsArrayList.add(element!!)
+                    }
+                    Log.d("topNewsArray3", topNewsArrayList?.get(0).toString())
                 }
-            }
 
+            }
             override fun onFailure(call: Call<TopNewsResponse>, t: Throwable) {
                 Log.d("TAG", t.message.toString())
             }
 
         })
+
+
     }
 
 

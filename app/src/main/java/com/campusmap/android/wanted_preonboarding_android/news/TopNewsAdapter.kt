@@ -69,6 +69,7 @@ class TopNewsAdapter : ListAdapter<Article, TopNewsAdapter.TopNewsViewHolder>(To
             //존재하는 포지션인지 확인
             val pos = adapterPosition
             if (pos != RecyclerView.NO_POSITION) {
+                Log.d("TopNews", pos.toString())
                 //동작 호출 (onItemClick 함수 호출)
                 if (itemClickListener != null) {
                     itemClickListener!!.onItemClick(v, pos)
