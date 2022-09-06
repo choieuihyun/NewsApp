@@ -8,12 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.campusmap.android.wanted_preonboarding_android.MainActivity
 import com.campusmap.android.wanted_preonboarding_android.R
-import com.campusmap.android.wanted_preonboarding_android.TopNewsViewModel.TopNewsViewModel
+import com.campusmap.android.wanted_preonboarding_android.ViewModel.TopNewsViewModel
 import com.campusmap.android.wanted_preonboarding_android.adapter.TopNewsAdapter
 import com.campusmap.android.wanted_preonboarding_android.databinding.TopnewsBinding
 import kotlinx.coroutines.*
@@ -28,9 +29,17 @@ class TopNews : Fragment() {
         TopNewsAdapter()
     }
 
-    private val topNewsViewModel: TopNewsViewModel by lazy {
+
+/*    private val topNewsViewModel: TopNewsViewModel by lazy {
         ViewModelProvider(this).get(TopNewsViewModel::class.java)
+    }*/
+
+    // 요기 requireActivity로 바꿔서 Activity 주기에 맞췄음. by activityViewModels() 쓴거랑 같다고 생각함.
+    private val topNewsViewModel: TopNewsViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(TopNewsViewModel::class.java)
     }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,10 +97,10 @@ class TopNews : Fragment() {
             (activity as MainActivity).supportActionBar?.title = "TopNews"
         }
 
-
         topNewsAdapter.setOnItemClickListener(object : TopNewsAdapter.OnItemClickListener {
             override fun onItemClick(v: View?, pos: Int) {
                 CoroutineScope(Dispatchers.Main).launch {
+                    topNewsViewModel.loadTopNewsItem(pos)
                     createFragment(TopNewsDetail.newInstance())
                 }
             }

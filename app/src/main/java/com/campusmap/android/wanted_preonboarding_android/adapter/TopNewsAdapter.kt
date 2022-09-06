@@ -16,14 +16,14 @@ class TopNewsAdapter : ListAdapter<Article, TopNewsAdapter.TopNewsViewHolder>(To
     private var itemClickListener: OnItemClickListener? = null
 
     //인터페이스 선언
-    interface OnItemClickListener {
+    interface OnItemClickListener { // TopNewsAdapter를 구현하
         //클릭시 동작할 함수
         fun onItemClick(v: View?, pos: Int)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener?) {
         itemClickListener = listener
-    }
+    } // 여기 인터페이스 부분을 내 언어로 정리하자. 인간의 언어.
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopNewsViewHolder {

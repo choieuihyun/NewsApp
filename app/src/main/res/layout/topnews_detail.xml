@@ -8,7 +8,7 @@
 
         <variable
             name="topNewsDetail"
-            type="com.campusmap.android.wanted_preonboarding_android.news.TopNewsDetail" />
+            type="com.campusmap.android.wanted_preonboarding_android.news.Article" />
 
     </data>
 
@@ -29,7 +29,7 @@
             android:layout_height="80dp"
             android:padding="12dp"
             android:drawableEnd="@drawable/star_empty"
-            android:text="title" />
+            android:text="@{topNewsDetail.title}" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,13 +41,15 @@
             android:layout_width="150dp"
             android:layout_height="20dp"
             android:paddingStart="12dp"
-            android:text="author" />
+            android:text="@{topNewsDetail.author}" />
 
             <TextView
                 android:id="@+id/topNewsDetail_publishedAt"
-                android:layout_width="120dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="publishedAt"/>
+                android:gravity="right"
+                android:paddingEnd="12dp"
+                android:text="@{topNewsDetail.publishedAt}" />
 
         </LinearLayout>
 
@@ -63,9 +65,11 @@
             android:id="@+id/topNewsDetail_image"
             android:layout_width="match_parent"
             android:layout_height="250dp"
+            android:scaleType="fitXY"
             android:background="@drawable/topnews_radius"
-            android:backgroundTint="@color/purple_700"
-            android:padding="15dp" />
+            imageUrl="@{topNewsDetail.urlToImage}"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"/>
 
         <TextView
             android:id="@+id/topNewsDetail_content"
@@ -74,7 +78,7 @@
             android:layout_marginTop="20dp"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
-            android:text="content"/>
+            android:text="@{topNewsDetail.content}"/>
 
     </LinearLayout>
 

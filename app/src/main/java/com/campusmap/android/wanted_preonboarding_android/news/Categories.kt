@@ -18,13 +18,19 @@ import kotlinx.coroutines.launch
 import com.campusmap.android.wanted_preonboarding_android.MainActivity
 
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
 import com.campusmap.android.wanted_preonboarding_android.BuildConfig
+import com.campusmap.android.wanted_preonboarding_android.ViewModel.CategoryitemsViewModel
 
 
 class Categories : Fragment() {
 
     private lateinit var binding: CategoriesBinding
     private val bundle: Bundle = Bundle()
+
+    private val categoriesViewModel: CategoryitemsViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(CategoryitemsViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
