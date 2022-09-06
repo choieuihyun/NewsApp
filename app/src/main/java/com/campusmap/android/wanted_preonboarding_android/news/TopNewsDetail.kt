@@ -33,7 +33,7 @@ class TopNewsDetail : Fragment() {
     }
 
     companion object {
-        fun newInstance(data : Article) : TopNewsDetail {
+        fun newInstance() : TopNewsDetail {
             return TopNewsDetail()
         }
     }

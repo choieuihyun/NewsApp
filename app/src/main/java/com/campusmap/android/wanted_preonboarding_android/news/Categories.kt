@@ -18,9 +18,7 @@ import kotlinx.coroutines.launch
 import com.campusmap.android.wanted_preonboarding_android.MainActivity
 
 import androidx.fragment.app.FragmentActivity
-
-
-
+import com.campusmap.android.wanted_preonboarding_android.BuildConfig
 
 
 class Categories : Fragment() {

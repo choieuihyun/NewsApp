@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">NewsApp</string>
-    <string name="api_key">60254449737a48d3b0eff1beb1c81b1d</string>
     <string name="top_news">TopNews</string>
     <string name="categories">Categories</string>
     <string name="categories_text">Choose a category to start reading</string>
