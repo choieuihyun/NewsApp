@@ -14,7 +14,11 @@ import com.campusmap.android.wanted_preonboarding_android.R
 import com.campusmap.android.wanted_preonboarding_android.adapter.SavedItemAdapter
 import com.campusmap.android.wanted_preonboarding_android.databinding.SavedBinding
 import com.campusmap.android.wanted_preonboarding_android.roomdb.Saved
+import com.campusmap.android.wanted_preonboarding_android.viewmodel.SavedViewModel
 import com.campusmap.android.wanted_preonboarding_android.viewmodel.TopNewsViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SavedItem : Fragment() {
 
@@ -25,8 +29,8 @@ class SavedItem : Fragment() {
         SavedItemAdapter()
     }
 
-    private val savedViewModel: TopNewsViewModel by lazy { // TopNews랑 연동되니까
-        ViewModelProvider(requireActivity()).get(TopNewsViewModel::class.java)
+    private val savedViewModel: SavedViewModel by lazy { // TopNews랑 연동되니까
+        ViewModelProvider(requireActivity()).get(SavedViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,15 +60,35 @@ class SavedItem : Fragment() {
             viewLifecycleOwner,
             {
                 savedData -> updateUI(savedData)
-                Log.d("savedItemData", savedData.size.toString())
-                Log.d("savedItemData", savedData.toString())
             }
         )
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        savedItemAdapter.setOnItemClickListener(object : SavedItemAdapter.OnItemClickListener {
+            override fun onItemClick(v: View?, pos: Int) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    savedViewModel.setTopNewsItemPosition(pos)
+                    createFragment(SavedItemDetail.newInstance())
+                }
+            }
+
+        })
+    }
+
     private fun updateUI(item : List<Saved>) {
         savedItemAdapter.submitList(item)
+    }
+
+    private fun createFragment(view: Fragment) {
+        requireActivity()
+            .supportFragmentManager
+            .beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.topNews_container, view)
+            .commit()
     }
 
     companion object {

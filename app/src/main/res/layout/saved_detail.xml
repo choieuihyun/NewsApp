@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="categoryItemsDetail"
-            type="com.campusmap.android.wanted_preonboarding_android.news.Article" />
+            name="savedItemsDetail"
+            type="com.campusmap.android.wanted_preonboarding_android.roomdb.Saved" />
 
     </data>
 
@@ -32,10 +32,10 @@
                     android:layout_width="334dp"
                     android:layout_height="80dp"
                     android:padding="12dp"
-                    android:text="@{categoryItemsDetail.title}" />
+                    android:text="@{savedItemsDetail.title}" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/categories_item_detail_checkbox"
+                    android:id="@+id/saved_item_detail_checkbox"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:button="@drawable/topnews_detail_button"
@@ -54,14 +54,14 @@
                     android:layout_width="150dp"
                     android:layout_height="20dp"
                     android:paddingStart="12dp"
-                    android:text="@{categoryItemsDetail.author}" />
+                    android:text="@{savedItemsDetail.author}" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="right"
                     android:paddingEnd="12dp"
-                    android:text="@{categoryItemsDetail.publishedAt}" />
+                    android:text="@{savedItemsDetail.publishedAt}" />
 
             </LinearLayout>
 
@@ -78,7 +78,7 @@
                 android:layout_height="250dp"
                 android:scaleType="fitXY"
                 android:background="@drawable/topnews_radius"
-                imageUrl="@{categoryItemsDetail.urlToImage}"
+                imageUrl="@{savedItemsDetail.urlToImage}"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"/>
 
@@ -88,7 +88,7 @@
                 android:layout_marginTop="20dp"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
-                android:text="@{categoryItemsDetail.content}"/>
+                android:text="@{savedItemsDetail.content}"/>
 
         </LinearLayout>
 

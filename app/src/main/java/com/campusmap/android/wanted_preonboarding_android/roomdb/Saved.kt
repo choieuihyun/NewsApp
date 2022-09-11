@@ -14,7 +14,7 @@ data class Saved (
     var publishedAt: String?,
     var title: String?,
     var urlToImage: String?,
-    var savedButton: Boolean = false
+    var savedButton: Boolean?
 ) {
 
 }

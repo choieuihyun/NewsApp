@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 
 // 필요하면 typeConverter까지
-@Database(entities = [Saved::class], version = 3)
+@Database(entities = [Saved::class], version = 4)
 abstract class SavedDatabase : RoomDatabase() {
 
     abstract fun savedDao(): SavedDao

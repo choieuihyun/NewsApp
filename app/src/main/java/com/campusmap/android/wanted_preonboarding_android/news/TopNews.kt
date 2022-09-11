@@ -28,12 +28,6 @@ class TopNews : Fragment() {
         TopNewsAdapter()
     }
 
-
-/*    private val topNewsViewModel: TopNewsViewModel by lazy {
-        ViewModelProvider(this).get(TopNewsViewModel::class.java)
-    }*/
-
-    // 요기 requireActivity로 바꿔서 Activity 주기에 맞췄음. by activityViewModels() 쓴거랑 같다고 생각함.
     private val topNewsViewModel: TopNewsViewModel by lazy {
         ViewModelProvider(requireActivity()).get(TopNewsViewModel::class.java)
     }
@@ -41,11 +35,6 @@ class TopNews : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-        Log.d("topNewsArray1", "topNewsArray1")
-
-
-        Log.d("TopNewsLifecycle", "onCreate")
     }
 
 
@@ -56,13 +45,12 @@ class TopNews : Fragment() {
     ): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.topnews, container, false)
-        Log.d("TopNewsLifecycle", "onCreateView")
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("TopNewsLifecycle", "onViewCreated")
+
         topNewsRecyclerView = view.findViewById(R.id.topNews_recycler_view)
         topNewsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         topNewsRecyclerView.adapter = topNewsAdapter
@@ -80,8 +68,6 @@ class TopNews : Fragment() {
             }
         }
 
-
-        Log.d("TopNews", topNewsViewModel.getTopNewsAllResponseLiveData().value.toString())
         topNewsViewModel.getTopNewsAllResponseLiveData().observe(
             viewLifecycleOwner,
             {
@@ -93,7 +79,6 @@ class TopNews : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        Log.d("TopNewsLifecycle", "onResume")
         val activity : Activity? = activity
 
         if (activity != null) {
@@ -112,16 +97,15 @@ class TopNews : Fragment() {
 
     }
 
-    companion object { // 근데 왜 이렇게 하는거지?
+    companion object {
         fun newInstance() : TopNews {
             return TopNews()
         }
     }
 
-
     private fun updateUI(topNews: List<Article?>) {
         topNewsAdapter.submitList(topNews)
-        //topNewsRecyclerView.adapter = topNewsAdapter
+
     }
 
     private fun createFragment(view: Fragment) {

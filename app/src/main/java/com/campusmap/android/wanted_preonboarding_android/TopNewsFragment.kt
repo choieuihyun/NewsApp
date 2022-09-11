@@ -45,21 +45,6 @@ class TopNewsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-     /*   binding.bn.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.top_news -> {
-                    CoroutineScope(Dispatchers.Main).launch {
-                       createFragment(TopNews())
-                    }
-                }
-                R.id.categories -> {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        createFragment(Categories())
-                    }
-                }
-            }
-            true
-        }*/
 
         binding.bn.run {
             setOnItemSelectedListener { item ->

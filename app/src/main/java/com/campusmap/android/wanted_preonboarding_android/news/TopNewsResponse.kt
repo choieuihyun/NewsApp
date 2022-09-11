@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName
 
 data class TopNewsResponse(
     @SerializedName("articles")
-    // val articles: List<Article?>?
     val articles: List<Article?>?,
     @SerializedName("status")
     val status: String?,
@@ -30,8 +29,6 @@ data class Article(
     val url: String?,
     @SerializedName("urlToImage")
     val urlToImage: String?,
-    @SerializedName("button")
-    var savedButton: Boolean = false
 )
 
 data class Source(

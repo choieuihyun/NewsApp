@@ -22,7 +22,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.IllegalStateException
 
-class TopNewsRepository private constructor(context: Context){ // private constructor 왜 했더라.
+class TopNewsRepository private constructor(context: Context) { // private constructor 왜 했더라.
 
     // Architecture Guide: https://developer.android.com/jetpack/guide#connect-viewmodel-repository
 
@@ -32,14 +32,15 @@ class TopNewsRepository private constructor(context: Context){ // private constr
     private var topNewsMutableLiveData: MutableLiveData<List<Article?>> = MutableLiveData()
     private var topNewsCategoryMutableLiveData: MutableLiveData<List<Article?>> = MutableLiveData()
     private var topNewsData: List<Article?>? = listOf()
+    private var topNewsCategoryData: List<Article?>? = listOf()
 
 
     private val okHttpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            })
+                    level = HttpLoggingInterceptor.Level.BODY
+                })
             .build()
     }
 
@@ -55,41 +56,12 @@ class TopNewsRepository private constructor(context: Context){ // private constr
         retrofit.create(TopNewsService::class.java)
     }
 
-/*    fun getTopNewsItemData() : List<Article?>? {
-        // 요기 getTopNewsData에서 getString 그냥쓰면 못써서 context 받아와서 사용함.
-*//*      Fragment나 Activity에 있는 함수 사용하려면 이렇게 하는듯.
-        topNewsService.getTopNewsData(context.resources.getString(BuildConfig.NEWS_API_KEY))*//*
-        topNewsService.getTopNewsData(BuildConfig.NEWS_API_KEY)
-            .enqueue(object : Callback<TopNewsResponse>{
-            override fun onResponse(
-                call: Call<TopNewsResponse>,
-                response: Response<TopNewsResponse>
-            ) {
-                if(response.isSuccessful) {
-                    Log.d("TAG", response.body().toString())
-                    val result = response.body()?.articles
-                    topNewsMutableLiveData.postValue(result)
-                    topNewsData = result
-                    Log.d("topNewsData1", topNewsData.toString())
-                }
-            }
-            override fun onFailure(call: Call<TopNewsResponse>, t: Throwable) {
-                Log.d("TAG", "fail")
-            }
-
-        })
-        CoroutineScope(Dispatchers.IO).launch {
-            Log.d("topNewsData2", topNewsData.toString())
-        }
-        return topNewsData
-    }*/
-
     val getTopNewsItemData =
         CoroutineScope(Dispatchers.IO).async {
             val response = topNewsService.getTopNewsDataCoroutine(BuildConfig.NEWS_API_KEY)
 
             val value = async(Dispatchers.IO) { // Detail 누르면 이 블럭이 종료되는구나.
-                if(response.isSuccessful) {
+                if (response.isSuccessful) {
                     val result = response.body()?.articles
 
                     result.let {
@@ -107,25 +79,31 @@ class TopNewsRepository private constructor(context: Context){ // private constr
 
     fun getCategoryItemData(context: Context, category: String) {
 
-        val activity : Context = context
-        (activity as MainActivity).supportActionBar?.title = "Category - ${category.replaceFirstChar { it.uppercase() }}"
+        val activity: Context = context
+        (activity as MainActivity).supportActionBar?.title =
+            "Category - ${category.replaceFirstChar { it.uppercase() }}"
 
-        topNewsService.getTopNewsCategoryData(BuildConfig.NEWS_API_KEY, category)
-            .enqueue(object : Callback<TopNewsResponse> {
-                override fun onResponse(
-                    call: Call<TopNewsResponse>,
-                    response: Response<TopNewsResponse>
-                ) {
-                    if(response.isSuccessful) {
-                        val result = response.body()?.articles
-                        topNewsCategoryMutableLiveData.postValue(result)
+        val value = CoroutineScope(Dispatchers.IO).async {
+
+            val response = topNewsService.getTopNewsCategoryData(BuildConfig.NEWS_API_KEY, category)
+
+            val value2 = async(Dispatchers.IO) {
+                if (response.isSuccessful) {
+                    val result = response.body()?.articles
+
+                    result.let {
+                        topNewsCategoryMutableLiveData.postValue(it)
+                        topNewsCategoryData = it
                     }
+                } else {
+                    Log.d("TAG", response.code().toString())
                 }
-                override fun onFailure(call: Call<TopNewsResponse>, t: Throwable) {
-                    Log.d("TAG", "categoryFail")
-                }
-            })
+            }
+            value2.await()
+        }
+        value
     }
+
 
     fun getTopNewsAllResponseLiveData(): LiveData<List<Article?>> {
         return this.topNewsMutableLiveData
@@ -140,12 +118,10 @@ class TopNewsRepository private constructor(context: Context){ // private constr
 
     }
 
-/*    fun getTopNewsDetailResponseLiveData(position: Int): Article? {
-        return this.topNewsMutableLiveData[position]
-    }*/
+    fun getTopNewsCategoryAllResponseData(): List<Article?>? { // category detail data
+        return topNewsCategoryData
+    }
 
-
-    // Room DB
 
     private val database : SavedDatabase = Room.databaseBuilder(
         context.applicationContext,
@@ -156,25 +132,17 @@ class TopNewsRepository private constructor(context: Context){ // private constr
 
     private val savedDao = database.savedDao()
 
-    fun getAllSaved() = savedDao.getAllSavedNewsLiveData() // Saved LiveData 데이터 모두
+    fun getAllSavedLiveData() = savedDao.getAllSavedNewsLiveData() // Saved LiveData 데이터 모두
+
+    suspend fun getAllSavedData() = savedDao.getAllSavedNewsData()
 
 
 
-//    fun getSavedIdData(id: Int) {
-//        CoroutineScope(Dispatchers.IO).launch {
-//             savedDao.getSavedIdData(id)
-//        }
-//    }
     suspend fun getTitle(title: String) {
         CoroutineScope(Dispatchers.IO).launch {
             savedDao.getSavedNewsData(title)
         }
     }
-
-
-/*    fun getAllSavedNewsData() = savedDao.getAllSavedNewsData() // 그냥 Saved 데이터 모두
-
-    fun getSavedNewsData() = savedDao.getSavedNewsData()*/
 
     fun addSaved(saved: Saved) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -185,6 +153,12 @@ class TopNewsRepository private constructor(context: Context){ // private constr
     fun deleteSaved(title: String) {
         CoroutineScope(Dispatchers.IO).launch {
             savedDao.deleteSaved(title)
+        }
+    }
+
+    fun deleteSaved(saved: Saved) {
+        CoroutineScope(Dispatchers.IO).launch {
+            savedDao.deleteSaved(saved)
         }
     }
 

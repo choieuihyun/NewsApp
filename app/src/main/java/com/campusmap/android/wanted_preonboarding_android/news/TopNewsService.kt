@@ -13,8 +13,8 @@ interface TopNewsService {
     suspend fun getTopNewsDataCoroutine(@Query("apiKey") apiKey : String) : Response<TopNewsResponse>
 
     @GET("top-headlines?country=us")
-    fun getTopNewsCategoryData(@Query("apiKey") apiKey : String,
-                               @Query("category") category: String) : Call<TopNewsResponse>
+    suspend fun getTopNewsCategoryData(@Query("apiKey") apiKey : String,
+                               @Query("category") category: String) : Response<TopNewsResponse>
 
 
 

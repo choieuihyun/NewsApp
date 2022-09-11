@@ -10,10 +10,22 @@ import androidx.lifecycle.ViewModelProvider
 import com.campusmap.android.wanted_preonboarding_android.R
 import com.campusmap.android.wanted_preonboarding_android.viewmodel.CategoryitemsViewModel
 import com.campusmap.android.wanted_preonboarding_android.databinding.CategoriesItemDetailBinding
+import com.campusmap.android.wanted_preonboarding_android.roomdb.Saved
+import com.campusmap.android.wanted_preonboarding_android.viewmodel.TopNewsViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CategoryItemDetail : Fragment() {
 
     private lateinit var binding: CategoriesItemDetailBinding
+    private var id: Int? = null
+    private var getTitleKey: String? = null
+    private var getCheckedKey: String? = null
+
+    private val sharedPreferences by lazy {
+        context?.getSharedPreferences("CategoryItemDetail", 0)
+    }
 
     private val categoriesItemDetailViewModel: CategoryitemsViewModel by lazy {
         ViewModelProvider(requireActivity()).get(CategoryitemsViewModel::class.java)
@@ -36,17 +48,59 @@ class CategoryItemDetail : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val position = categoriesItemDetailViewModel.topNewsCategoryItemPosition
+
         val category = categoriesItemDetailViewModel.topNewsCategoryItem
 
-        categoriesItemDetailViewModel.getCategoryItemData(requireContext(), category)
+        CoroutineScope(Dispatchers.IO).launch {
 
-        val pos = categoriesItemDetailViewModel.topNewsCategoryItemPosition
+            categoriesItemDetailViewModel.getCategoryItemData(requireContext(), category)
 
-        categoriesItemDetailViewModel.getTopNewsCategoryResponseLiveData().observe(
-            viewLifecycleOwner,
-            {
-                categoriesItemDetail -> updateUI(categoriesItemDetail[pos]!!)
-        })
+            launch(Dispatchers.Main) {
+                categoriesItemDetailViewModel.getTopNewsCategoryResponseLiveData().observe(
+                    viewLifecycleOwner,
+                    { categoriesItemDetail ->
+                        updateUI(categoriesItemDetail[position]!!)
+                        getTitleKey = categoriesItemDetail[position]?.title
+                        getCheckedKey = categoriesItemDetail[position]?.title
+                    })
+                }.join()
+
+            launch(Dispatchers.Main) {
+
+                binding.categoriesItemDetailCheckbox.isChecked =
+                    sharedPreferences?.getString(getTitleKey, "") != ""
+
+                }.join()
+
+            launch(Dispatchers.IO) {
+
+                val article = categoriesItemDetailViewModel.getTopNewsCategoryResponseData()
+
+                binding.categoriesItemDetailCheckbox.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) {
+                        val saved = Saved(
+                            id,
+                            article?.get(position)?.author,
+                            article?.get(position)?.content,
+                            article?.get(position)?.publishedAt,
+                            article?.get(position)?.title,
+                            article?.get(position)?.urlToImage,
+                            true
+                        )
+                        categoriesItemDetailViewModel.addSaved(saved)
+
+                        sharedPreferences?.edit()?.putBoolean("${saved.title}", isChecked)?.apply()
+                        sharedPreferences?.edit()?.putString("${saved.title}", saved.title)?.apply()
+                    } else {
+
+                        sharedPreferences?.edit()?.putBoolean(getCheckedKey, isChecked)?.apply()
+                        sharedPreferences?.edit()?.putString(getTitleKey, "")?.apply()
+                        categoriesItemDetailViewModel.deleteSaved(getTitleKey!!)
+                    }
+                }
+            }
+        }
     }
 
     private fun updateUI(item: Article) {

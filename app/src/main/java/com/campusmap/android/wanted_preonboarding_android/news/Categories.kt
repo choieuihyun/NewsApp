@@ -21,17 +21,10 @@ import com.campusmap.android.wanted_preonboarding_android.viewmodel.Categoryitem
 class Categories : Fragment() {
 
     private lateinit var binding: CategoriesBinding
-    private val bundle: Bundle = Bundle()
-
-    private val categoriesViewModel: CategoryitemsViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(CategoryitemsViewModel::class.java)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("categories", "onCreate")
-
-
     }
 
     override fun onCreateView(

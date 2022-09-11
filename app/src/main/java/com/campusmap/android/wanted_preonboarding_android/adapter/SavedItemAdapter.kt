@@ -43,11 +43,9 @@ class SavedItemAdapter : ListAdapter<Saved, SavedItemAdapter.SavedItemViewHolder
         }
 
         override fun onClick(v: View?) {
-            //존재하는 포지션인지 확인
             val pos = adapterPosition
             if (pos != RecyclerView.NO_POSITION) {
                 Log.d("TopNews", pos.toString())
-                //동작 호출 (onItemClick 함수 호출)
                 if (itemClickListener != null) {
                     itemClickListener!!.onItemClick(v, pos)
                 }
@@ -61,8 +59,7 @@ class SavedItemAdapter : ListAdapter<Saved, SavedItemAdapter.SavedItemViewHolder
         private val savedItemCallback = object : DiffUtil.ItemCallback<Saved>() {
             override fun areItemsTheSame(oldItem: Saved, newItem: Saved): Boolean {
                 return oldItem.hashCode() == newItem.hashCode()
-            } // areItemsTheSame은 객체가 같은지 판단해야 하기 때문에 주소값으로 비교하거나 객체 내 고유의 값으로 비교를
-
+            }
             override fun areContentsTheSame(oldItem: Saved, newItem: Saved): Boolean {
                 return oldItem == newItem
             }
