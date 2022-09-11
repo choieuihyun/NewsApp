@@ -1,6 +1,6 @@
 # 프로젝트 설명
 
-- 프로젝트 명 = wanted_preonboarding_android
+- 프로젝트 명 : wanted_preonboarding_android
 
 - News API를 사용해 데이터를 받아와서 화면에 띄우고, 저장하는 기능
 
@@ -29,12 +29,26 @@
  2. TopNewsDetail : TopNews의 ListItem을 눌렀을 때 나오는 Fragment
  
  - repository package
- 1. TopNewsApplication : Application()을 상속받아 TopNewsRepository가 앱 시작시 생성될 수 있도록 함.
+ 1. TopNewsApplication : Application()을 상속받아 TopNewsRepository가 앱 시작시 생성될 수 있도록 함
  2. TopNewsRepository : Model에 접근하는 Repository로, retrofit과 Room DB를 생성하며 데이터를 받아와 가공하는 메서드가 포함된 Repository
 
  - retrofit package
  1. TopNewsResponse : NewsAPI를 받아 사용할 수 있는 형태로 변환하는 구조가 있는 data class
  2. TopNewsService : NewsAPI를 받아오는 방식과 Query가 있으며 각각 받아오는 구조마다 반환형태가 있는 interface
+
+ - roomdb package
+ 1. Saved : RoomDB table의 구조
+ 2. SavedDao : RoomDB table의 데이터 INSERT,DELETE,SELECT interface
+ 3. SavedDatabase : 클래스가 앱의 DB를 나타낸다고 Room에게 알려주며 엔터티와 DB버전을 지정
+
+- viewmodel package
+ 1. CategoryItemsViewModel : Category의 Data를 가공하며 TopNewsRrepository의 해당 LiveData를 Observe
+ 2. TopNewsViewModel : TopNews Data를 가공하며 TopNewsRepository의 해당 LiveData를 Observe
+ 3. SavedViewModel : Saved Data를 가공하며 TopNewsRrepository의 해당 LiveData를 Observe
+
+- TopNewsFragment
+ 1. 앱의 모든 Fragment들이 부착되는 BottomNavigation의 mainFragment
+
 
 # 개발 도구
 
