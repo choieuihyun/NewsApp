@@ -1,4 +1,4 @@
-package com.campusmap.android.wanted_preonboarding_android.news
+package com.campusmap.android.wanted_preonboarding_android.retrofit
 
 import retrofit2.Call
 import retrofit2.Response

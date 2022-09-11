@@ -1,9 +1,7 @@
 package com.campusmap.android.wanted_preonboarding_android.roomdb
 
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.campusmap.android.wanted_preonboarding_android.news.Article
 
 @Entity
 data class Saved (

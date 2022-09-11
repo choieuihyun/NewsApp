@@ -2,7 +2,6 @@ package com.campusmap.android.wanted_preonboarding_android.news
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +15,7 @@ import com.campusmap.android.wanted_preonboarding_android.R
 import com.campusmap.android.wanted_preonboarding_android.viewmodel.TopNewsViewModel
 import com.campusmap.android.wanted_preonboarding_android.adapter.TopNewsAdapter
 import com.campusmap.android.wanted_preonboarding_android.databinding.TopnewsBinding
+import com.campusmap.android.wanted_preonboarding_android.retrofit.Article
 import kotlinx.coroutines.*
 
 

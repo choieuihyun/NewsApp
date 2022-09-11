@@ -3,7 +3,7 @@ package com.campusmap.android.wanted_preonboarding_android.viewmodel
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.campusmap.android.wanted_preonboarding_android.news.Article
+import com.campusmap.android.wanted_preonboarding_android.retrofit.Article
 import com.campusmap.android.wanted_preonboarding_android.repository.TopNewsRepository
 import com.campusmap.android.wanted_preonboarding_android.roomdb.Saved
 import kotlinx.coroutines.CoroutineScope

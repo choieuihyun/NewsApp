@@ -1,7 +1,6 @@
 package com.campusmap.android.wanted_preonboarding_android.adapter
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.campusmap.android.wanted_preonboarding_android.databinding.TopnewsItemListBinding
-import com.campusmap.android.wanted_preonboarding_android.news.Article
+import com.campusmap.android.wanted_preonboarding_android.retrofit.Article
 
 
 class TopNewsAdapter : ListAdapter<Article, TopNewsAdapter.TopNewsViewHolder>(TopNewsCallback) {

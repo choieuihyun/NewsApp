@@ -1,4 +1,4 @@
-package com.campusmap.android.wanted_preonboarding_android.news
+package com.campusmap.android.wanted_preonboarding_android.category
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.campusmap.android.wanted_preonboarding_android.R
 import com.campusmap.android.wanted_preonboarding_android.viewmodel.CategoryitemsViewModel
 import com.campusmap.android.wanted_preonboarding_android.databinding.CategoriesItemDetailBinding
+import com.campusmap.android.wanted_preonboarding_android.retrofit.Article
 import com.campusmap.android.wanted_preonboarding_android.roomdb.Saved
-import com.campusmap.android.wanted_preonboarding_android.viewmodel.TopNewsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

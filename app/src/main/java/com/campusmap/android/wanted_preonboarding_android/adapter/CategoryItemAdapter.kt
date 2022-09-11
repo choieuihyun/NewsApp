@@ -7,10 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.campusmap.android.wanted_preonboarding_android.databinding.CategoriesItemBinding
 import com.campusmap.android.wanted_preonboarding_android.databinding.CategoriesItemListBinding
-import com.campusmap.android.wanted_preonboarding_android.databinding.TopnewsItemListBinding
-import com.campusmap.android.wanted_preonboarding_android.news.Article
+import com.campusmap.android.wanted_preonboarding_android.retrofit.Article
 
 class CategoryItemAdapter : ListAdapter<Article, CategoryItemAdapter.CategoryItemViewHolder>(TopNewsCallback) {
 

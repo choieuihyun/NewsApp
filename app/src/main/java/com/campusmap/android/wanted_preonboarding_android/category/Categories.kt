@@ -1,4 +1,4 @@
-package com.campusmap.android.wanted_preonboarding_android.news
+package com.campusmap.android.wanted_preonboarding_android.category
 
 import android.app.Activity
 import android.os.Bundle
@@ -14,9 +14,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.campusmap.android.wanted_preonboarding_android.MainActivity
-
-import androidx.lifecycle.ViewModelProvider
-import com.campusmap.android.wanted_preonboarding_android.viewmodel.CategoryitemsViewModel
 
 class Categories : Fragment() {
 

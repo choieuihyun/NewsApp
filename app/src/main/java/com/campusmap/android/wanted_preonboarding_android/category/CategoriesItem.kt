@@ -1,7 +1,6 @@
-package com.campusmap.android.wanted_preonboarding_android.news
+package com.campusmap.android.wanted_preonboarding_android.category
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +15,7 @@ import com.campusmap.android.wanted_preonboarding_android.viewmodel.Categoryitem
 
 import com.campusmap.android.wanted_preonboarding_android.adapter.CategoryItemAdapter
 import com.campusmap.android.wanted_preonboarding_android.databinding.CategoriesItemBinding
+import com.campusmap.android.wanted_preonboarding_android.retrofit.Article
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

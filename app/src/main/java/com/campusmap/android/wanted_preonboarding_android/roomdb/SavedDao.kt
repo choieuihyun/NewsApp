@@ -2,8 +2,6 @@ package com.campusmap.android.wanted_preonboarding_android.roomdb
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.campusmap.android.wanted_preonboarding_android.news.Article
-import retrofit2.http.DELETE
 
 
 @Dao

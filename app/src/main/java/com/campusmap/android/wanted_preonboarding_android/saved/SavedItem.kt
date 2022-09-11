@@ -1,7 +1,6 @@
-package com.campusmap.android.wanted_preonboarding_android.news
+package com.campusmap.android.wanted_preonboarding_android.saved
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import com.campusmap.android.wanted_preonboarding_android.adapter.SavedItemAdapt
 import com.campusmap.android.wanted_preonboarding_android.databinding.SavedBinding
 import com.campusmap.android.wanted_preonboarding_android.roomdb.Saved
 import com.campusmap.android.wanted_preonboarding_android.viewmodel.SavedViewModel
-import com.campusmap.android.wanted_preonboarding_android.viewmodel.TopNewsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

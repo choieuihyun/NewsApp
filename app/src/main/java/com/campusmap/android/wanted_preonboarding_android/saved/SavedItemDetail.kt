@@ -1,4 +1,4 @@
-package com.campusmap.android.wanted_preonboarding_android.news
+package com.campusmap.android.wanted_preonboarding_android.saved
 
 import android.os.Bundle
 import android.util.Log

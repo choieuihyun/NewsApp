@@ -1,10 +1,7 @@
 package com.campusmap.android.wanted_preonboarding_android.viewmodel
 
-import android.app.Application
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.*
-import com.campusmap.android.wanted_preonboarding_android.news.Article
+import com.campusmap.android.wanted_preonboarding_android.retrofit.Article
 import com.campusmap.android.wanted_preonboarding_android.repository.TopNewsRepository
 import com.campusmap.android.wanted_preonboarding_android.roomdb.Saved
 import kotlinx.coroutines.*
