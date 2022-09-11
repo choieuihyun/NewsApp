@@ -18,7 +18,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.IllegalStateException
 
-class TopNewsRepository private constructor(context: Context) { // private constructor 왜 했더라.
+class TopNewsRepository private constructor(context: Context) {
 
     // Architecture Guide: https://developer.android.com/jetpack/guide#connect-viewmodel-repository
 
@@ -56,7 +56,7 @@ class TopNewsRepository private constructor(context: Context) { // private const
         CoroutineScope(Dispatchers.IO).async {
             val response = topNewsService.getTopNewsDataCoroutine(BuildConfig.NEWS_API_KEY)
 
-            val value = async(Dispatchers.IO) { // Detail 누르면 이 블럭이 종료되는구나.
+            val value = async(Dispatchers.IO) { 
                 if (response.isSuccessful) {
                     val result = response.body()?.articles
 
@@ -131,7 +131,6 @@ class TopNewsRepository private constructor(context: Context) { // private const
     fun getAllSavedLiveData() = savedDao.getAllSavedNewsLiveData() // Saved LiveData 데이터 모두
 
     suspend fun getAllSavedData() = savedDao.getAllSavedNewsData()
-
 
 
     suspend fun getTitle(title: String) {
