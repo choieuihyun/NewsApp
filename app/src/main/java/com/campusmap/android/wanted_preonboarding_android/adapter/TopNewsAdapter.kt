@@ -1,5 +1,6 @@
 package com.campusmap.android.wanted_preonboarding_android.adapter
 
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,13 +14,13 @@ import com.campusmap.android.wanted_preonboarding_android.news.Article
 
 class TopNewsAdapter : ListAdapter<Article, TopNewsAdapter.TopNewsViewHolder>(TopNewsCallback) { // no Type 뭐시기 뜨면 ListAdapter Import 미스.
 
-    private var itemClickListener: OnItemClickListener? = null
-
     //인터페이스 선언
     interface OnItemClickListener { // TopNewsAdapter를 구현하
         //클릭시 동작할 함수
         fun onItemClick(v: View?, pos: Int)
     }
+
+    private var itemClickListener: OnItemClickListener? = null
 
     fun setOnItemClickListener(listener: OnItemClickListener?) {
         itemClickListener = listener
@@ -44,17 +45,16 @@ class TopNewsAdapter : ListAdapter<Article, TopNewsAdapter.TopNewsViewHolder>(To
 
         fun bind(item: Article) {
             binding.topNewsItemList = item
+            val bundle = Bundle()
 //            binding.imageView.let {
 //                Glide.with(it).load(binding.topNewsItemList?.urlToImage).into(it)
 //            }
         }
 
         override fun onClick(v: View?) {
-            Log.d("TopNews","clickedinAdapter")
             //존재하는 포지션인지 확인
             val pos = adapterPosition
             if (pos != RecyclerView.NO_POSITION) {
-                Log.d("TopNews", pos.toString())
                 //동작 호출 (onItemClick 함수 호출)
                 if (itemClickListener != null) {
                     itemClickListener!!.onItemClick(v, pos)

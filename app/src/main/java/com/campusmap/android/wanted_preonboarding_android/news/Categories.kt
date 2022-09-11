@@ -1,13 +1,11 @@
 package com.campusmap.android.wanted_preonboarding_android.news
 
-import android.app.ActionBar
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.ActionBarContainer
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.campusmap.android.wanted_preonboarding_android.R
@@ -17,11 +15,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.campusmap.android.wanted_preonboarding_android.MainActivity
 
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import com.campusmap.android.wanted_preonboarding_android.BuildConfig
-import com.campusmap.android.wanted_preonboarding_android.ViewModel.CategoryitemsViewModel
-
+import com.campusmap.android.wanted_preonboarding_android.viewmodel.CategoryitemsViewModel
 
 class Categories : Fragment() {
 
@@ -99,9 +94,6 @@ class Categories : Fragment() {
             .replace(R.id.topNews_container, view)
             .commit()
     }
-
-
-
 
     companion object {
         fun newInstance() : Categories {

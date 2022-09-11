@@ -14,13 +14,15 @@ import com.campusmap.android.wanted_preonboarding_android.news.Article
 
 class CategoryItemAdapter : ListAdapter<Article, CategoryItemAdapter.CategoryItemViewHolder>(TopNewsCallback) { // no Type 뭐시기 뜨면 ListAdapter Import 미스.
 
-    private var itemClickListener: OnItemClickListener? = null
+
 
     //인터페이스 선언
     interface OnItemClickListener {
         //클릭시 동작할 함수
         fun onItemClick(v: View?, pos: Int)
     }
+
+    private var itemClickListener: OnItemClickListener? = null
 
     fun setOnItemClickListener(listener: OnItemClickListener?) {
         itemClickListener = listener

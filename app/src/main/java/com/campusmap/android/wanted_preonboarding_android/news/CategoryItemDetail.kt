@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.campusmap.android.wanted_preonboarding_android.R
-import com.campusmap.android.wanted_preonboarding_android.ViewModel.CategoryitemsViewModel
+import com.campusmap.android.wanted_preonboarding_android.viewmodel.CategoryitemsViewModel
 import com.campusmap.android.wanted_preonboarding_android.databinding.CategoriesItemDetailBinding
 
 class CategoryItemDetail : Fragment() {
@@ -37,10 +37,12 @@ class CategoryItemDetail : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val category = categoriesItemDetailViewModel.topNewsCategoryItem
+
         categoriesItemDetailViewModel.getCategoryItemData(requireContext(), category)
 
         val pos = categoriesItemDetailViewModel.topNewsCategoryItemPosition
-        categoriesItemDetailViewModel.getTopNewsResponseLiveData().observe(
+
+        categoriesItemDetailViewModel.getTopNewsCategoryResponseLiveData().observe(
             viewLifecycleOwner,
             {
                 categoriesItemDetail -> updateUI(categoriesItemDetail[pos]!!)

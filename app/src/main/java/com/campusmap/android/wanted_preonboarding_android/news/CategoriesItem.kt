@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.campusmap.android.wanted_preonboarding_android.R
-import com.campusmap.android.wanted_preonboarding_android.ViewModel.CategoryitemsViewModel
+import com.campusmap.android.wanted_preonboarding_android.viewmodel.CategoryitemsViewModel
 
 import com.campusmap.android.wanted_preonboarding_android.adapter.CategoryItemAdapter
 import com.campusmap.android.wanted_preonboarding_android.databinding.CategoriesItemBinding
@@ -64,32 +64,9 @@ class CategoriesItem : Fragment() {
         Log.d("cateitemlist", itemId.toString())
 
         // viewModel 은 액티비티나 프래그먼트의 context를 참조하지 않게 구현하는것을 지향해야한다.
-        createCategoriesItemDetail(itemId.toString())
-/*        when (itemId.toString()) {
-            "business" -> {
-                categoryItemViewModel.getCategoryItemData(requireContext(), "business")
-            }
-            "entertainment" -> {
-                categoryItemViewModel.getCategoryItemData(requireContext(), "entertainment")
-            }
-            "general" -> {
-                categoryItemViewModel.getCategoryItemData(requireContext(), "general")
-            }
-            "health" -> {
-                categoryItemViewModel.getCategoryItemData(requireContext(), "health")
-            }
-            "science" -> {
-                categoryItemViewModel.getCategoryItemData(requireContext(), "science")
-            }
-            "sports" -> {
-                categoryItemViewModel.getCategoryItemData(requireContext(), "sports")
-            }
-            "technology" -> {
-                categoryItemViewModel.getCategoryItemData(requireContext(), "technology")
-            }
-        }*/
+        createCategoriesItem(itemId.toString())
 
-        categoryItemViewModel.getTopNewsResponseLiveData().observe(
+        categoryItemViewModel.getTopNewsCategoryResponseLiveData().observe(
             viewLifecycleOwner,
             {
                     categoryItem -> updateUI(categoryItem)
@@ -144,7 +121,7 @@ class CategoriesItem : Fragment() {
 
     }
 
-    private fun createCategoriesItemDetail(itemId: String) {
+    private fun createCategoriesItem(itemId: String) {
         categoryItemViewModel.getCategoryItemData(requireContext(), itemId)
     }
 

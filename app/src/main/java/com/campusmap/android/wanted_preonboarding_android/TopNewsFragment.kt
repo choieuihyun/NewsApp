@@ -9,7 +9,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.campusmap.android.wanted_preonboarding_android.databinding.TopnewsFragmentBinding
 import com.campusmap.android.wanted_preonboarding_android.news.Categories
+import com.campusmap.android.wanted_preonboarding_android.news.SavedItem
 import com.campusmap.android.wanted_preonboarding_android.news.TopNews
+import com.campusmap.android.wanted_preonboarding_android.roomdb.Saved
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -72,6 +74,11 @@ class TopNewsFragment : Fragment() {
                             createFragment(Categories.newInstance())
                         }
                     }
+                    R.id.saved -> {
+                        CoroutineScope(Dispatchers.Main).launch {
+                            createFragment(SavedItem.newInstance())
+                        }
+                    }
                 }
                 true
             }
@@ -80,12 +87,21 @@ class TopNewsFragment : Fragment() {
 
         binding.bn.setOnItemReselectedListener { item ->
             when (item.itemId) {
-                R.id.top_news -> {}
-                R.id.categories -> { CoroutineScope(Dispatchers.Main).launch {
+                R.id.top_news -> {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        createFragment(TopNews.newInstance())
+                    }
+                }
+                R.id.categories -> {
+                    CoroutineScope(Dispatchers.Main).launch {
                         createFragment(Categories.newInstance())
                     }
                 }
-                R.id.saved -> {}
+                R.id.saved -> {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        createFragment(SavedItem.newInstance())
+                    }
+                }
             }
         }
     }

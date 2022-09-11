@@ -29,10 +29,10 @@ data class Article(
     @SerializedName("url")
     val url: String?,
     @SerializedName("urlToImage")
-    val urlToImage: String?
+    val urlToImage: String?,
+    @SerializedName("button")
+    var savedButton: Boolean = false
 )
-
-
 
 data class Source(
     @SerializedName("id")

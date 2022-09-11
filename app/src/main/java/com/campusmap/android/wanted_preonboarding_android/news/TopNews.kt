@@ -8,13 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.campusmap.android.wanted_preonboarding_android.MainActivity
 import com.campusmap.android.wanted_preonboarding_android.R
-import com.campusmap.android.wanted_preonboarding_android.ViewModel.TopNewsViewModel
+import com.campusmap.android.wanted_preonboarding_android.viewmodel.TopNewsViewModel
 import com.campusmap.android.wanted_preonboarding_android.adapter.TopNewsAdapter
 import com.campusmap.android.wanted_preonboarding_android.databinding.TopnewsBinding
 import kotlinx.coroutines.*
@@ -39,8 +38,6 @@ class TopNews : Fragment() {
         ViewModelProvider(requireActivity()).get(TopNewsViewModel::class.java)
     }
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -48,7 +45,7 @@ class TopNews : Fragment() {
         Log.d("topNewsArray1", "topNewsArray1")
 
 
-        Log.d("TAG", "onCreate")
+        Log.d("TopNewsLifecycle", "onCreate")
     }
 
 
@@ -59,13 +56,13 @@ class TopNews : Fragment() {
     ): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.topnews, container, false)
-
+        Log.d("TopNewsLifecycle", "onCreateView")
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Log.d("TopNewsLifecycle", "onViewCreated")
         topNewsRecyclerView = view.findViewById(R.id.topNews_recycler_view)
         topNewsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         topNewsRecyclerView.adapter = topNewsAdapter
@@ -77,10 +74,15 @@ class TopNews : Fragment() {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }*/
 
-        topNewsViewModel.getTopNewsItemData(requireContext())
+        CoroutineScope(Dispatchers.IO).launch {
+            launch {
+                topNewsViewModel.getTopNewsItemData()
+            }
+        }
 
-        Log.d("TopNews", topNewsViewModel.getTopNewsResponseLiveData().value.toString())
-        topNewsViewModel.getTopNewsResponseLiveData().observe(
+
+        Log.d("TopNews", topNewsViewModel.getTopNewsAllResponseLiveData().value.toString())
+        topNewsViewModel.getTopNewsAllResponseLiveData().observe(
             viewLifecycleOwner,
             {
                 topNews -> updateUI(topNews)
@@ -91,6 +93,7 @@ class TopNews : Fragment() {
     override fun onResume() {
         super.onResume()
 
+        Log.d("TopNewsLifecycle", "onResume")
         val activity : Activity? = activity
 
         if (activity != null) {
@@ -100,7 +103,7 @@ class TopNews : Fragment() {
         topNewsAdapter.setOnItemClickListener(object : TopNewsAdapter.OnItemClickListener {
             override fun onItemClick(v: View?, pos: Int) {
                 CoroutineScope(Dispatchers.Main).launch {
-                    topNewsViewModel.loadTopNewsItem(pos)
+                    topNewsViewModel.setTopNewsItemPosition(pos) // 잘못된 구조의 느낌. viewHolder의 position을 넘김
                     createFragment(TopNewsDetail.newInstance())
                 }
             }
@@ -114,6 +117,7 @@ class TopNews : Fragment() {
             return TopNews()
         }
     }
+
 
     private fun updateUI(topNews: List<Article?>) {
         topNewsAdapter.submitList(topNews)

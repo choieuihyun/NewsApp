@@ -1,4 +1,4 @@
-package com.campusmap.android.wanted_preonboarding_android.ViewModel
+package com.campusmap.android.wanted_preonboarding_android.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -9,7 +9,8 @@ import com.campusmap.android.wanted_preonboarding_android.repository.TopNewsRepo
 class CategoryitemsViewModel : ViewModel() {
 
     private var topNewsRepository: TopNewsRepository = TopNewsRepository.get()
-    private var topNewsResponseLiveData: LiveData<List<Article?>> = topNewsRepository.getTopNewsResponseLiveData()
+    private var topNewsCategoryResponseLiveData: LiveData<List<Article?>> = topNewsRepository.getTopNewsCategoryAllResponseLiveData()
+
     var topNewsCategoryItemPosition: Int = 0
     var topNewsCategoryItem: String = ""
 
@@ -17,17 +18,17 @@ class CategoryitemsViewModel : ViewModel() {
         topNewsRepository.getCategoryItemData(context, category)
     }
 
-    fun getTopNewsItemData(context: Context) {
-        topNewsRepository.getTopNewsItemData(context)
-    }
+/*    fun getTopNewsItemData() {
+        topNewsRepository.getTopNewsItemData()
+    }*/
 
     fun loadTopNewsCategoryItem(position : Int, category: String) {
         topNewsCategoryItemPosition = position
         topNewsCategoryItem = category
     }
 
-    fun getTopNewsResponseLiveData(): LiveData<List<Article?>> {
-        return topNewsResponseLiveData
+    fun getTopNewsCategoryResponseLiveData(): LiveData<List<Article?>> {
+        return topNewsCategoryResponseLiveData
     }
 
 
