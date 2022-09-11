@@ -1,5 +1,6 @@
 package com.campusmap.android.wanted_preonboarding_android.saved
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.campusmap.android.wanted_preonboarding_android.MainActivity
 import com.campusmap.android.wanted_preonboarding_android.R
 import com.campusmap.android.wanted_preonboarding_android.adapter.SavedItemAdapter
 import com.campusmap.android.wanted_preonboarding_android.databinding.SavedBinding
@@ -34,6 +36,8 @@ class SavedItem : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        (activity as MainActivity).supportActionBar?.title =
+            "Saved"
     }
 
     override fun onCreateView(
@@ -84,7 +88,6 @@ class SavedItem : Fragment() {
         requireActivity()
             .supportFragmentManager
             .beginTransaction()
-            .addToBackStack(null)
             .replace(R.id.topNews_container, view)
             .commit()
     }

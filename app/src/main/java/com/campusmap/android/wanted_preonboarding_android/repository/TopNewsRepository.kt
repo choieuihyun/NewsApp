@@ -56,7 +56,7 @@ class TopNewsRepository private constructor(context: Context) {
         CoroutineScope(Dispatchers.IO).async {
             val response = topNewsService.getTopNewsDataCoroutine(BuildConfig.NEWS_API_KEY)
 
-            val value = async(Dispatchers.IO) { 
+            val value = async(Dispatchers.IO) {
                 if (response.isSuccessful) {
                     val result = response.body()?.articles
 
@@ -128,7 +128,7 @@ class TopNewsRepository private constructor(context: Context) {
 
     private val savedDao = database.savedDao()
 
-    fun getAllSavedLiveData() = savedDao.getAllSavedNewsLiveData() // Saved LiveData 데이터 모두
+    fun getAllSavedLiveData() = savedDao.getAllSavedNewsLiveData()
 
     suspend fun getAllSavedData() = savedDao.getAllSavedNewsData()
 

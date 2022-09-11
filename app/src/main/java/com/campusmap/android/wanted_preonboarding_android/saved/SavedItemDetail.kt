@@ -1,5 +1,6 @@
 package com.campusmap.android.wanted_preonboarding_android.saved
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.campusmap.android.wanted_preonboarding_android.MainActivity
 import com.campusmap.android.wanted_preonboarding_android.R
 import com.campusmap.android.wanted_preonboarding_android.databinding.SavedDetailBinding
 import com.campusmap.android.wanted_preonboarding_android.roomdb.Saved
@@ -19,10 +21,6 @@ import kotlinx.coroutines.launch
 class SavedItemDetail : Fragment() {
 
     private lateinit var binding: SavedDetailBinding
-
-    private val sharedPreferences by lazy {
-        context?.getSharedPreferences("SavedItemDetails", 0)
-    }
 
     private val savedNewsDetailViewModel: SavedViewModel by lazy {
         ViewModelProvider(requireActivity()).get(SavedViewModel::class.java)
@@ -46,6 +44,9 @@ class SavedItemDetail : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
 
             launch(Dispatchers.Main) {
+
+
+
                 savedNewsDetailViewModel.savedNewsLiveData.observe(
                     viewLifecycleOwner,
                     { savedNewsDetail ->
@@ -79,6 +80,7 @@ class SavedItemDetail : Fragment() {
 
     private fun updateUI(item : Saved) {
         binding.savedItemsDetail = item
+        (activity as MainActivity).supportActionBar?.title = item.title
     }
 
     private fun createFragment(view: Fragment) {
