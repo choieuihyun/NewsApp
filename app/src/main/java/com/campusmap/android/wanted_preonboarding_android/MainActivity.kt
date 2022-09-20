@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
         // 여기 practice2 추가요
 
         // practice 변경사항
+        // practice 두 번째 변경사항
 
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
 
