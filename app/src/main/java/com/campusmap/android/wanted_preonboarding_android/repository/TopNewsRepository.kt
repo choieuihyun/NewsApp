@@ -48,8 +48,8 @@ class TopNewsRepository private constructor(context: Context) {
             .build()
     }
 
-    private val topNewsService: TopNewsService by lazy {
-        retrofit.create(TopNewsService::class.java)
+    private val topNewsService: TopNewsService by lazy { // Retrofit은 앱 실행시 한번만 켜져야 앱이 과부하가 안걸리는데 이렇게하면 Repository가 앱 시작시 생성되더라도 얘는 쓰는곳마다 계속
+        retrofit.create(TopNewsService::class.java)      // 켜지는거 아닌가?
     }
 
     val getTopNewsItemData =
@@ -79,14 +79,13 @@ class TopNewsRepository private constructor(context: Context) {
         (activity as MainActivity).supportActionBar?.title =
             "Category - ${category.replaceFirstChar { it.uppercase() }}"
 
-        val value = CoroutineScope(Dispatchers.IO).async {
+            val value = CoroutineScope(Dispatchers.IO).async {
 
             val response = topNewsService.getTopNewsCategoryData(BuildConfig.NEWS_API_KEY, category)
 
             val value2 = async(Dispatchers.IO) {
                 if (response.isSuccessful) {
                     val result = response.body()?.articles
-
                     result.let {
                         topNewsCategoryMutableLiveData.postValue(it)
                         topNewsCategoryData = it
