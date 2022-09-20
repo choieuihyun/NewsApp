@@ -1,7 +1,10 @@
 package com.campusmap.android.wanted_preonboarding_android.news
 
 import android.app.Activity
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +37,7 @@ class TopNews : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
     }
 
@@ -84,6 +88,8 @@ class TopNews : Fragment() {
         if (activity != null) {
             (activity as MainActivity).supportActionBar?.title = "TopNews"
         }
+
+
 
         topNewsAdapter.setOnItemClickListener(object : TopNewsAdapter.OnItemClickListener {
             override fun onItemClick(v: View?, pos: Int) {

@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.campusmap.android.wanted_preonboarding_android.R
+import com.campusmap.android.wanted_preonboarding_android.TopNewsFragment
 import com.campusmap.android.wanted_preonboarding_android.viewmodel.TopNewsViewModel
 import com.campusmap.android.wanted_preonboarding_android.databinding.TopnewsDetailBinding
 import com.campusmap.android.wanted_preonboarding_android.retrofit.Article
@@ -46,7 +47,6 @@ class TopNewsDetail : Fragment() {
     ): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.topnews_detail, container, false)
-
 
         return binding.root
     }
@@ -129,6 +129,7 @@ class TopNewsDetail : Fragment() {
     }
 
     companion object {
+
         fun newInstance() : TopNewsDetail {
             return TopNewsDetail()
         }

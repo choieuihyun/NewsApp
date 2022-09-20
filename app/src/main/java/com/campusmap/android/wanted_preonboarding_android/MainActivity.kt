@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
             actionBar?.title = "NewsApp"
 
             val fragment = TopNewsFragment.newInstance()
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commitAllowingStateLoss()
         }
     }
 

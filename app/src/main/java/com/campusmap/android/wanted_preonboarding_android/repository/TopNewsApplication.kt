@@ -9,6 +9,5 @@ class TopNewsApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         TopNewsRepository.initialize(this)
-        val sharedPreferences = getSharedPreferences("", 0)
     }
 }
