@@ -10,6 +10,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // 여기 practice2 추가요
 
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
 
