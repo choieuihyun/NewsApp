@@ -8,7 +8,7 @@
 
         <variable
             name="categoriesFragment"
-            type="com.campusmap.android.wanted_preonboarding_android.news.Categories" />
+            type="com.campusmap.android.wanted_preonboarding_android.category.Categories" />
 
     </data>
 

@@ -1,6 +1,8 @@
-package com.campusmap.android.wanted_preonboarding_android.news
+package com.campusmap.android.wanted_preonboarding_android.category
 
 import android.app.Activity
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,23 +17,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.campusmap.android.wanted_preonboarding_android.MainActivity
 
-import androidx.lifecycle.ViewModelProvider
-import com.campusmap.android.wanted_preonboarding_android.viewmodel.CategoryitemsViewModel
-
 class Categories : Fragment() {
 
     private lateinit var binding: CategoriesBinding
-    private val bundle: Bundle = Bundle()
-
-    private val categoriesViewModel: CategoryitemsViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(CategoryitemsViewModel::class.java)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("categories", "onCreate")
-
-
     }
 
     override fun onCreateView(
@@ -46,6 +38,11 @@ class Categories : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val geo : Geocoder = Geocoder(requireContext())
+
+        val address : MutableList<Address> = geo.getFromLocation(35.814243358044095, 127.09176491959228, 1)
+        Log.d("sdfsdfsdf", address[0].toString())
     }
 
     override fun onResume() {

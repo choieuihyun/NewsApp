@@ -1,4 +1,4 @@
-package com.campusmap.android.wanted_preonboarding_android.news
+package com.campusmap.android.wanted_preonboarding_android.category
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,36 +8,31 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.campusmap.android.wanted_preonboarding_android.R
-import com.campusmap.android.wanted_preonboarding_android.TopNewsFragment
-import com.campusmap.android.wanted_preonboarding_android.viewmodel.TopNewsViewModel
-import com.campusmap.android.wanted_preonboarding_android.databinding.TopnewsDetailBinding
+import com.campusmap.android.wanted_preonboarding_android.viewmodel.CategoryitemsViewModel
+import com.campusmap.android.wanted_preonboarding_android.databinding.CategoriesItemDetailBinding
 import com.campusmap.android.wanted_preonboarding_android.retrofit.Article
 import com.campusmap.android.wanted_preonboarding_android.roomdb.Saved
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class TopNewsDetail : Fragment() {
+class CategoryItemDetail : Fragment() {
 
-    private lateinit var binding: TopnewsDetailBinding
+    private lateinit var binding: CategoriesItemDetailBinding
     private var id: Int? = null
     private var getTitleKey: String? = null
     private var getCheckedKey: String? = null
-    private var checked: Boolean? = false
 
-    // https://developer.android.com/training/data-storage/shared-preferences?hl=ko
     private val sharedPreferences by lazy {
-        context?.getSharedPreferences("TopNewsDetails", 0)
+        context?.getSharedPreferences("CategoryItemDetail", 0)
     }
 
-    private val topNewsDetailViewModel: TopNewsViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(TopNewsViewModel::class.java)
+    private val categoriesItemDetailViewModel: CategoryitemsViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(CategoryitemsViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
     }
 
     override fun onCreateView(
@@ -45,8 +40,7 @@ class TopNewsDetail : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        binding = DataBindingUtil.inflate(inflater, R.layout.topnews_detail, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.categories_item_detail, container, false)
 
         return binding.root
     }
@@ -54,36 +48,36 @@ class TopNewsDetail : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val position = topNewsDetailViewModel.topNewsPosition
+        val position = categoriesItemDetailViewModel.topNewsCategoryItemPosition
+
+        val category = categoriesItemDetailViewModel.topNewsCategoryItem
 
         CoroutineScope(Dispatchers.IO).launch {
 
+            categoriesItemDetailViewModel.getCategoryItemData(requireContext(), category)
 
             launch(Dispatchers.Main) {
-                topNewsDetailViewModel.getTopNewsAllResponseLiveData().observe(
+                categoriesItemDetailViewModel.getTopNewsCategoryResponseLiveData().observe(
                     viewLifecycleOwner,
-                    { topNewsDetail ->
-                        updateUI(topNewsDetail[position]!!)
-                        getTitleKey = topNewsDetail[position]?.title
-                        getCheckedKey = topNewsDetail[position]?.title
-                    }
-                )
-            }.join()
-
-
+                    { categoriesItemDetail ->
+                        updateUI(categoriesItemDetail[position]!!)
+                        getTitleKey = categoriesItemDetail[position]?.title
+                        getCheckedKey = categoriesItemDetail[position]?.title
+                    })
+                }.join()
 
             launch(Dispatchers.Main) {
 
-                binding.topNewsDetailCheckBox.isChecked =
+                binding.categoriesItemDetailCheckbox.isChecked =
                     sharedPreferences?.getString(getTitleKey, "") != ""
 
-            }.join()
+                }.join()
 
             launch(Dispatchers.IO) {
 
-                val article = topNewsDetailViewModel.getTopNewsAllResponseData()
+                val article = categoriesItemDetailViewModel.getTopNewsCategoryResponseData()
 
-                binding.topNewsDetailCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                binding.categoriesItemDetailCheckbox.setOnCheckedChangeListener { _, isChecked ->
                     if (isChecked) {
                         val saved = Saved(
                             id,
@@ -94,45 +88,30 @@ class TopNewsDetail : Fragment() {
                             article?.get(position)?.urlToImage,
                             true
                         )
-                        topNewsDetailViewModel.addSaved(saved)
+                        categoriesItemDetailViewModel.addSaved(saved)
 
-                        sharedPreferences?.edit()?.putBoolean("${saved.title}", true)?.apply()
+                        sharedPreferences?.edit()?.putBoolean("${saved.title}", isChecked)?.apply()
                         sharedPreferences?.edit()?.putString("${saved.title}", saved.title)?.apply()
-
                     } else {
 
-                        sharedPreferences?.edit()?.putBoolean(getCheckedKey, false)?.apply()
+                        sharedPreferences?.edit()?.putBoolean(getCheckedKey, isChecked)?.apply()
                         sharedPreferences?.edit()?.putString(getTitleKey, "")?.apply()
-
-                        topNewsDetailViewModel.deleteSaved(getTitleKey!!)
+                        categoriesItemDetailViewModel.deleteSaved(getTitleKey!!)
                     }
-
                 }
             }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-
-    }
-
-    private fun updateUI(item : Article) {
-        binding.topNewsDetail = item
+    private fun updateUI(item: Article) {
+        binding.categoryItemsDetail = item
     }
 
     companion object {
-
-        fun newInstance() : TopNewsDetail {
-            return TopNewsDetail()
+        fun newInstance() : CategoryItemDetail {
+            return CategoryItemDetail()
         }
     }
+
 
 }

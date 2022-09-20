@@ -1,7 +1,7 @@
-package com.campusmap.android.wanted_preonboarding_android.news
+package com.campusmap.android.wanted_preonboarding_android.saved
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.campusmap.android.wanted_preonboarding_android.MainActivity
 import com.campusmap.android.wanted_preonboarding_android.R
 import com.campusmap.android.wanted_preonboarding_android.adapter.SavedItemAdapter
 import com.campusmap.android.wanted_preonboarding_android.databinding.SavedBinding
 import com.campusmap.android.wanted_preonboarding_android.roomdb.Saved
-import com.campusmap.android.wanted_preonboarding_android.viewmodel.TopNewsViewModel
+import com.campusmap.android.wanted_preonboarding_android.viewmodel.SavedViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SavedItem : Fragment() {
 
@@ -25,13 +29,15 @@ class SavedItem : Fragment() {
         SavedItemAdapter()
     }
 
-    private val savedViewModel: TopNewsViewModel by lazy { // TopNews랑 연동되니까
-        ViewModelProvider(requireActivity()).get(TopNewsViewModel::class.java)
+    private val savedViewModel: SavedViewModel by lazy { // TopNews랑 연동되니까
+        ViewModelProvider(requireActivity()).get(SavedViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        (activity as MainActivity).supportActionBar?.title =
+            "Saved"
     }
 
     override fun onCreateView(
@@ -56,15 +62,34 @@ class SavedItem : Fragment() {
             viewLifecycleOwner,
             {
                 savedData -> updateUI(savedData)
-                Log.d("savedItemData", savedData.size.toString())
-                Log.d("savedItemData", savedData.toString())
             }
         )
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        savedItemAdapter.setOnItemClickListener(object : SavedItemAdapter.OnItemClickListener {
+            override fun onItemClick(v: View?, pos: Int) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    savedViewModel.setTopNewsItemPosition(pos)
+                    createFragment(SavedItemDetail.newInstance())
+                }
+            }
+
+        })
+    }
+
     private fun updateUI(item : List<Saved>) {
         savedItemAdapter.submitList(item)
+    }
+
+    private fun createFragment(view: Fragment) {
+        requireActivity()
+            .supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.topNews_container, view)
+            .commit()
     }
 
     companion object {

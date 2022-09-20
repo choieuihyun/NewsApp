@@ -8,7 +8,7 @@
 
         <variable
             name="saved"
-            type="com.campusmap.android.wanted_preonboarding_android.news.Article" />
+            type="com.campusmap.android.wanted_preonboarding_android.roomdb.Saved" />
 
     </data>
 

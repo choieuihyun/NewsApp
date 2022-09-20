@@ -1,7 +1,6 @@
 package com.campusmap.android.wanted_preonboarding_android
 
-import android.util.Log
-import com.campusmap.android.wanted_preonboarding_android.news.TopNewsService
+import com.campusmap.android.wanted_preonboarding_android.retrofit.TopNewsService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

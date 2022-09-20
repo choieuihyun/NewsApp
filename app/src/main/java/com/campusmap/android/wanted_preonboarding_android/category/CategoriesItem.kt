@@ -1,7 +1,6 @@
-package com.campusmap.android.wanted_preonboarding_android.news
+package com.campusmap.android.wanted_preonboarding_android.category
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,21 +15,21 @@ import com.campusmap.android.wanted_preonboarding_android.viewmodel.Categoryitem
 
 import com.campusmap.android.wanted_preonboarding_android.adapter.CategoryItemAdapter
 import com.campusmap.android.wanted_preonboarding_android.databinding.CategoriesItemBinding
+import com.campusmap.android.wanted_preonboarding_android.retrofit.Article
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 import java.io.Serializable
 
-// 이거 이름바꾸면 왜 안되냐
 class CategoriesItem : Fragment() {
 
-    private lateinit var binding: CategoriesItemBinding // 구조 같아서 그냥 이거 사용. 근데 이게 맞나?
+    private lateinit var binding: CategoriesItemBinding
     private lateinit var cateItemRecyclerView: RecyclerView
     private lateinit var itemId: Serializable
 
     private val categoryItemAdapter by lazy {
-        CategoryItemAdapter() // 구조 같아서 요거 사용함.
+        CategoryItemAdapter()
     }
 
     private val categoryItemViewModel by lazy {
@@ -61,9 +60,7 @@ class CategoriesItem : Fragment() {
         cateItemRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         cateItemRecyclerView.adapter = categoryItemAdapter
-        Log.d("cateitemlist", itemId.toString())
 
-        // viewModel 은 액티비티나 프래그먼트의 context를 참조하지 않게 구현하는것을 지향해야한다.
         createCategoriesItem(itemId.toString())
 
         categoryItemViewModel.getTopNewsCategoryResponseLiveData().observe(
@@ -77,18 +74,16 @@ class CategoriesItem : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        Log.d("cate", "onStart")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("cate", "onResume")
 
 
         categoryItemAdapter.setOnItemClickListener(object : CategoryItemAdapter.OnItemClickListener {
             override fun onItemClick(v: View?, pos: Int) {
                 CoroutineScope(Dispatchers.Main).launch {
-                    categoryItemViewModel.loadTopNewsCategoryItem(pos, itemId.toString())
+                    categoryItemViewModel.setTopNewsCategoryItemInfo(pos, itemId.toString())
                     createFragment(CategoryItemDetail.newInstance())
                 }
             }
@@ -98,22 +93,19 @@ class CategoriesItem : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        Log.d("cate", "onPause")
+
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d("cate", "onStop")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d("cate", "onDestroyView")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("cate", "onDestroy")
     }
 
     private fun updateUI(categoryItem: List<Article?>) {

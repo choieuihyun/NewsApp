@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.ActionBar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.campusmap.android.wanted_preonboarding_android.databinding.TopnewsFragmentBinding
-import com.campusmap.android.wanted_preonboarding_android.news.Categories
-import com.campusmap.android.wanted_preonboarding_android.news.SavedItem
+import com.campusmap.android.wanted_preonboarding_android.category.Categories
+import com.campusmap.android.wanted_preonboarding_android.saved.SavedItem
 import com.campusmap.android.wanted_preonboarding_android.news.TopNews
-import com.campusmap.android.wanted_preonboarding_android.roomdb.Saved
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -45,21 +43,6 @@ class TopNewsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-     /*   binding.bn.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.top_news -> {
-                    CoroutineScope(Dispatchers.Main).launch {
-                       createFragment(TopNews())
-                    }
-                }
-                R.id.categories -> {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        createFragment(Categories())
-                    }
-                }
-            }
-            true
-        }*/
 
         binding.bn.run {
             setOnItemSelectedListener { item ->

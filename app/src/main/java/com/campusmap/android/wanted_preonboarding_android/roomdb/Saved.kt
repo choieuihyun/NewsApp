@@ -1,9 +1,7 @@
 package com.campusmap.android.wanted_preonboarding_android.roomdb
 
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.campusmap.android.wanted_preonboarding_android.news.Article
 
 @Entity
 data class Saved (
@@ -14,7 +12,7 @@ data class Saved (
     var publishedAt: String?,
     var title: String?,
     var urlToImage: String?,
-    var savedButton: Boolean = false
+    var savedButton: Boolean?
 ) {
 
 }
