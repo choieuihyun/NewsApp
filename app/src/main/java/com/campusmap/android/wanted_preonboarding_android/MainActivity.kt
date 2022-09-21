@@ -15,6 +15,8 @@ class MainActivity : AppCompatActivity() {
         // practice 변경사항
         // practice 두 번째 변경사항
 
+        //localbranch 전 branch
+
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
 
         if(currentFragment == null) {
