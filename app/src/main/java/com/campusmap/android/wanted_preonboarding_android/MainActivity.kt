@@ -11,6 +11,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
+        //localbranch 전 branch
+
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
 
         if(currentFragment == null) {
