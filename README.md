@@ -1,3 +1,5 @@
+### 제대로 이해하기 전의 project입니다.
+
 # 프로젝트 설명
 
 - 프로젝트 명 : wanted_preonboarding_android
