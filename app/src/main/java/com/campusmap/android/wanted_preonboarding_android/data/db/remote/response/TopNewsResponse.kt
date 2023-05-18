@@ -1,4 +1,4 @@
-package com.campusmap.android.wanted_preonboarding_android.retrofit
+package com.campusmap.android.wanted_preonboarding_android.data.db.remote.response
 
 
 import com.google.gson.annotations.SerializedName
