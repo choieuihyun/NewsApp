@@ -1,4 +1,4 @@
-package com.campusmap.android.wanted_preonboarding_android.roomdb
+package com.campusmap.android.wanted_preonboarding_android.data.db.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

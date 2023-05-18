@@ -1,6 +1,5 @@
-package com.campusmap.android.wanted_preonboarding_android
+package com.campusmap.android.wanted_preonboarding_android.data.db.remote.api
 
-import com.campusmap.android.wanted_preonboarding_android.retrofit.TopNewsService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -29,8 +28,8 @@ object RetrofitClient { // singleton
             .build()
     }
 
-    val topNewsService: TopNewsService by lazy {
-        retrofit.create(TopNewsService::class.java)
+    val topNewsApi: TopNewsApi by lazy {
+        retrofit.create(TopNewsApi::class.java)
     }
 
 }

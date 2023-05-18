@@ -1,7 +1,8 @@
-package com.campusmap.android.wanted_preonboarding_android.roomdb
+package com.campusmap.android.wanted_preonboarding_android.data.db.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.campusmap.android.wanted_preonboarding_android.data.db.local.entity.Saved
 
 
 @Dao
