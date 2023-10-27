@@ -1,43 +1,39 @@
-package com.campusmap.android.wanted_preonboarding_android.news
+package com.example.presentation.topnews
 
 import android.app.Activity
-import android.location.Address
-import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.campusmap.android.wanted_preonboarding_android.MainActivity
-import com.campusmap.android.wanted_preonboarding_android.R
-import com.campusmap.android.wanted_preonboarding_android.viewmodel.TopNewsViewModel
-import com.campusmap.android.wanted_preonboarding_android.adapter.TopNewsAdapter
-import com.campusmap.android.wanted_preonboarding_android.databinding.TopnewsBinding
-import com.campusmap.android.wanted_preonboarding_android.retrofit.Article
+import com.example.data.repositoryimpl.TopNewsRepositoryImpl
+import com.example.presentation.R
+import com.example.presentation.adapter.TopNewsAdapter
+import com.example.presentation.databinding.TopnewsBinding
+import com.example.presentation.presenter.MainActivity
+import com.example.presentation.presenter.MainContract
+import com.example.presentation.presenter.TopNewsPresenter
+import com.example.domain.model.ArticleModel
+import com.example.domain.repository.TopNewsRepository
+import com.example.domain.usecase.GetTopNewsUseCase
 import kotlinx.coroutines.*
 
 
-class TopNews : Fragment() {
+class TopNews() : Fragment(), MainContract.TopNewsView {
 
     private lateinit var binding: TopnewsBinding
     private lateinit var topNewsRecyclerView: RecyclerView
+    private lateinit var presenter: TopNewsPresenter
 
     private val topNewsAdapter by lazy {
         TopNewsAdapter()
     }
 
-    private val topNewsViewModel: TopNewsViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(TopNewsViewModel::class.java)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
     }
 
@@ -48,35 +44,33 @@ class TopNews : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.topnews, container, false)
+        binding = TopnewsBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 올바른 구조가 아닌 것 같음. 프레임워크 사용 안하고 해보려다가 이렇게 된건데 이거 아니면 다 거기서 거기네
+        // 이렇게 하면 presentation layer에서 data layer의 TopNewsRepositoryImpl 인스턴스를 생성해버림.
+        val repository: TopNewsRepository = TopNewsRepositoryImpl(requireContext())
+        val topNews = GetTopNewsUseCase(repository)
+        presenter = TopNewsPresenter(this, topNews)
+
         topNewsRecyclerView = view.findViewById(R.id.topNews_recycler_view)
         topNewsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         topNewsRecyclerView.adapter = topNewsAdapter
 
-/*        binding.topNewsRecyclerView.apply {
-            findViewById<View>(R.id.topNews_recycler_view)
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = topNewsAdapter
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-        }*/
-
         CoroutineScope(Dispatchers.IO).launch {
-            launch {
-                topNewsViewModel.getTopNewsItemData()
-            }
+
+            presenter.getTopNews(requireContext())
+
+            updateNews(topNews.getTopNews())
+
+            Log.d("TopNews", topNews.getTopNews().toString())
+
         }
 
-        topNewsViewModel.getTopNewsAllResponseLiveData().observe(
-            viewLifecycleOwner,
-            {
-                topNews -> updateUI(topNews)
-            })
 
     }
 
@@ -89,12 +83,9 @@ class TopNews : Fragment() {
             (activity as MainActivity).supportActionBar?.title = "TopNews"
         }
 
-
-
         topNewsAdapter.setOnItemClickListener(object : TopNewsAdapter.OnItemClickListener {
             override fun onItemClick(v: View?, pos: Int) {
                 CoroutineScope(Dispatchers.Main).launch {
-                    topNewsViewModel.setTopNewsItemPosition(pos) // 잘못된 구조의 느낌. viewHolder의 position을 넘김
                     createFragment(TopNewsDetail.newInstance())
                 }
             }
@@ -109,9 +100,9 @@ class TopNews : Fragment() {
         }
     }
 
-    private fun updateUI(topNews: List<Article?>) {
-        topNewsAdapter.submitList(topNews)
 
+    override fun updateNews(topNews: List<ArticleModel?>?) {
+        topNewsAdapter.submitList(topNews)
     }
 
     private fun createFragment(view: Fragment) {
