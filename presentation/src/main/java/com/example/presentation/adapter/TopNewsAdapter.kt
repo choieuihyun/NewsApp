@@ -1,17 +1,18 @@
-package com.campusmap.android.wanted_preonboarding_android.adapter
+package com.example.presentation.adapter
 
-import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.campusmap.android.wanted_preonboarding_android.databinding.TopnewsItemListBinding
-import com.campusmap.android.wanted_preonboarding_android.retrofit.Article
+import com.bumptech.glide.Glide
+import com.example.presentation.databinding.TopnewsItemListBinding
+import com.example.domain.model.ArticleModel
+import com.example.presentation.R
 
-
-class TopNewsAdapter : ListAdapter<Article, TopNewsAdapter.TopNewsViewHolder>(TopNewsCallback) {
+class TopNewsAdapter : ListAdapter<ArticleModel, TopNewsAdapter.TopNewsViewHolder>(TopNewsCallback) {
 
 
     interface OnItemClickListener {
@@ -31,7 +32,12 @@ class TopNewsAdapter : ListAdapter<Article, TopNewsAdapter.TopNewsViewHolder>(To
     }
 
     override fun onBindViewHolder(holder: TopNewsViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val item = getItem(position)
+        holder.bind(item)
+        Glide.with(holder.itemView)
+            .load(item.urlToImage)
+            .error(R.drawable.no_image)
+            .into(holder.binding.imageView)
     }
 
 
@@ -41,9 +47,10 @@ class TopNewsAdapter : ListAdapter<Article, TopNewsAdapter.TopNewsViewHolder>(To
             binding.root.setOnClickListener(this)
         }
 
-        fun bind(item: Article) {
-            binding.topNewsItemList = item
-            val bundle = Bundle()
+        fun bind(item: ArticleModel) {
+            binding.title.text = item.title
+            binding.author.text = item.author
+            binding.publishedAt.text = item.publishedAt
         }
 
         override fun onClick(v: View?) {
@@ -51,6 +58,7 @@ class TopNewsAdapter : ListAdapter<Article, TopNewsAdapter.TopNewsViewHolder>(To
             if (pos != RecyclerView.NO_POSITION) {
                 if (itemClickListener != null) {
                     itemClickListener!!.onItemClick(v, pos)
+                    Log.d("adapter", "clicked")
                 }
             }
         }
@@ -61,12 +69,12 @@ class TopNewsAdapter : ListAdapter<Article, TopNewsAdapter.TopNewsViewHolder>(To
 
     companion object {
 
-        private val TopNewsCallback = object : DiffUtil.ItemCallback<Article>() {
-            override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
+        private val TopNewsCallback = object : DiffUtil.ItemCallback<ArticleModel>() {
+            override fun areItemsTheSame(oldItem: ArticleModel, newItem: ArticleModel): Boolean {
                 return oldItem.hashCode() == newItem.hashCode()
             }
 
-            override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
+            override fun areContentsTheSame(oldItem: ArticleModel, newItem: ArticleModel): Boolean {
                 return oldItem == newItem
             }
 
