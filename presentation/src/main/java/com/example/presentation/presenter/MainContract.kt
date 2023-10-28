@@ -11,17 +11,12 @@ interface MainContract {
     }
 
     interface TopNewsPresenter { // business logic 선언
-        suspend fun getTopNews(context: Context)
+        suspend fun getTopNews()
         suspend fun savedTopNews(saved: SavedModel)
     }
 
-
-    interface Saved { // model에서 presenter를 참조 하고 있지 않기 때문에 Saved interface안에 interface를 생성해서 presenter에서 상속받도록 함.
-
-    }
-
     interface TopNewsCategoryPresenter {
-        suspend fun getTopNewsCategory()
+        suspend fun getTopNewsCategory(category: String)
         suspend fun savedTopNewsCategory()
     }
 
