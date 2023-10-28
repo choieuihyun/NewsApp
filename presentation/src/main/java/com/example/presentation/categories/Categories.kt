@@ -1,4 +1,4 @@
-package com.campusmap.android.wanted_preonboarding_android.category
+package com.example.presentation.categories
 
 import android.app.Activity
 import android.location.Address
@@ -10,12 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.campusmap.android.wanted_preonboarding_android.R
-import com.campusmap.android.wanted_preonboarding_android.databinding.CategoriesBinding
+import com.example.presentation.R
+import com.example.presentation.databinding.CategoriesBinding
+import com.example.presentation.presenter.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import com.campusmap.android.wanted_preonboarding_android.MainActivity
 
 class Categories : Fragment() {
 
@@ -41,8 +41,8 @@ class Categories : Fragment() {
 
         val geo : Geocoder = Geocoder(requireContext())
 
-        val address : MutableList<Address> = geo.getFromLocation(35.814243358044095, 127.09176491959228, 1)
-        Log.d("sdfsdfsdf", address[0].toString())
+        val address : MutableList<Address>? = geo.getFromLocation(35.814243358044095, 127.09176491959228, 1)
+        Log.d("sdfsdfsdf", address?.get(0).toString())
     }
 
     override fun onResume() {
@@ -59,25 +59,25 @@ class Categories : Fragment() {
             CoroutineScope(Dispatchers.Main).launch {
 
                 businessButton.setOnClickListener {
-                    createFragment(CategoriesItem.newInstance("business"))
+                    createFragment(CategoriesNews.newInstance("business"))
                 }
                 entertainButton.setOnClickListener {
-                    createFragment(CategoriesItem.newInstance("entertainment"))
+                    createFragment(CategoriesNews.newInstance("entertainment"))
                 }
                 generalButton.setOnClickListener {
-                    createFragment(CategoriesItem.newInstance("general"))
+                    createFragment(CategoriesNews.newInstance("general"))
                 }
                 healthButton.setOnClickListener {
-                    createFragment(CategoriesItem.newInstance("health"))
+                    createFragment(CategoriesNews.newInstance("health"))
                 }
                 scienceButton.setOnClickListener {
-                    createFragment(CategoriesItem.newInstance("science"))
+                    createFragment(CategoriesNews.newInstance("science"))
                 }
                 sportsButton.setOnClickListener {
-                    createFragment(CategoriesItem.newInstance("sports"))
+                    createFragment(CategoriesNews.newInstance("sports"))
                 }
                 techButton.setOnClickListener {
-                    createFragment(CategoriesItem.newInstance("technology"))
+                    createFragment(CategoriesNews.newInstance("technology"))
                 }
             }
         }
