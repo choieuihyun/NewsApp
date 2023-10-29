@@ -8,11 +8,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.data.db.local.entity.Saved
+import com.example.data.repositoryimpl.TopNewsRepositoryImpl
 import com.example.domain.model.ArticleModelParcelize
+import com.example.domain.model.SavedModel
+import com.example.domain.usecase.AddTopNewsSavedUseCase
+import com.example.domain.usecase.GetTopNewsSavedUseCase
 import com.example.presentation.R
 import com.example.presentation.databinding.TopnewsDetailBinding
+import com.example.presentation.presenter.MainContract
+import com.example.presentation.presenter.TopNewsDetailPresenter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class TopNewsDetail : Fragment() {
+class TopNewsDetail : Fragment(), MainContract.TopNewsPresenter.TopNewsDetailPresenter {
 
     private lateinit var binding: TopnewsDetailBinding
     private var id: Int? = null
@@ -62,6 +72,25 @@ class TopNewsDetail : Fragment() {
 
         Log.d("topNewsDetailAr", item.toString())
 
+        binding.topNewsDetailCheckBox.setOnClickListener {
+
+            val topNewsSaved = SavedModel(
+                title = item.title,
+                author = item.author,
+                content = item.content,
+                publishedAt = item.publishedAt,
+                urlToImage = item.urlToImage,
+                savedButton = true
+            )
+
+            CoroutineScope(Dispatchers.IO).launch {
+
+                addTopNews(topNewsSaved)
+
+            }
+
+        }
+
 
     }
 
@@ -75,6 +104,14 @@ class TopNewsDetail : Fragment() {
                 arguments = args
             }
         }
+    }
+
+    override suspend fun addTopNews(saved: SavedModel) {
+        val repository = TopNewsRepositoryImpl.getInstance()
+        val topNews = AddTopNewsSavedUseCase(repository)
+        val presenter = TopNewsDetailPresenter(topNews)
+
+        presenter.addTopNews(saved)
     }
 
 }
