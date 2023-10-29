@@ -10,20 +10,19 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.repositoryimpl.TopNewsRepositoryImpl
+import com.example.domain.model.ArticleModel
 import com.example.presentation.R
 import com.example.presentation.adapter.TopNewsAdapter
 import com.example.presentation.databinding.TopnewsBinding
 import com.example.presentation.presenter.MainActivity
 import com.example.presentation.presenter.MainContract
 import com.example.presentation.presenter.TopNewsPresenter
-import com.example.domain.model.ArticleModel
 import com.example.domain.model.ArticleModelParcelize
-import com.example.domain.repository.TopNewsRepository
 import com.example.domain.usecase.GetTopNewsUseCase
 import kotlinx.coroutines.*
 
 
-class TopNews() : Fragment(), MainContract.TopNewsView {
+class TopNews : Fragment(), MainContract.TopNewsView<ArticleModel> {
 
     private lateinit var binding: TopnewsBinding
     private lateinit var topNewsRecyclerView: RecyclerView
