@@ -12,8 +12,14 @@ interface MainContract {
     }
 
     interface TopNewsPresenter { // business logic 선언
+        
         suspend fun getTopNews()
-        suspend fun savedTopNews(saved: SavedModel)
+
+        interface TopNewsDetailPresenter {
+
+            suspend fun addTopNews(saved: SavedModel)
+
+        }
     }
 
     interface TopNewsCategoryPresenter {
@@ -21,14 +27,11 @@ interface MainContract {
         suspend fun savedTopNewsCategory()
     }
 
-    interface GetTopNewsSavedPresenter {
-        suspend fun getTopNewsSaved(saved: SavedModel)
-        suspend fun savedTopNews(saved: SavedModel)
-    }
-
     interface TopNewsSavedPresenter {
-        fun getTopNewsSaved()
-        suspend fun deleteTopNewsSaved()
+        suspend fun getTopNewsSaved()
+        suspend fun addTopNewsSaved(saved: SavedModel)
+
+        suspend fun deleteTopNewsSaved(title: String)
     }
 
 }
