@@ -1,38 +1,37 @@
-package com.campusmap.android.wanted_preonboarding_android.saved
+package com.example.presentation.saved
 
-import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.campusmap.android.wanted_preonboarding_android.MainActivity
-import com.campusmap.android.wanted_preonboarding_android.R
-import com.campusmap.android.wanted_preonboarding_android.adapter.SavedItemAdapter
-import com.campusmap.android.wanted_preonboarding_android.databinding.SavedBinding
-import com.campusmap.android.wanted_preonboarding_android.roomdb.Saved
-import com.campusmap.android.wanted_preonboarding_android.viewmodel.SavedViewModel
+import com.example.data.repositoryimpl.TopNewsRepositoryImpl
+import com.example.domain.model.SavedModel
+import com.example.domain.usecase.GetTopNewsSavedUseCase
+import com.example.presentation.R
+import com.example.presentation.adapter.SavedNewsAdapter
+import com.example.presentation.databinding.SavedBinding
+import com.example.presentation.databinding.SavedItemListBinding
+import com.example.presentation.presenter.MainActivity
+import com.example.presentation.presenter.MainContract
+import com.example.presentation.presenter.TopNewsSavedPresenter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SavedItem : Fragment() {
+class SavedItem : Fragment(), MainContract.TopNewsView<SavedModel> {
 
     private lateinit var binding: SavedBinding
     private lateinit var savedItemRecyclerView: RecyclerView
+    private lateinit var presenter: TopNewsSavedPresenter
 
-    private val savedItemAdapter by lazy {
-        SavedItemAdapter()
+    private val savedNewsAdapter by lazy {
+        SavedNewsAdapter()
     }
-
-    private val savedViewModel: SavedViewModel by lazy { // TopNews랑 연동되니까
-        ViewModelProvider(requireActivity()).get(SavedViewModel::class.java)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -46,7 +45,7 @@ class SavedItem : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.saved, container, false)
+        binding = SavedBinding.inflate(inflater)
 
         return binding.root
     }
@@ -54,35 +53,33 @@ class SavedItem : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val repository = TopNewsRepositoryImpl.getInstance()
+        val topNewsSaved = GetTopNewsSavedUseCase(repository)
+        presenter = TopNewsSavedPresenter(this, topNewsSaved)
+
         savedItemRecyclerView = view.findViewById(R.id.saved_recycler_view)
         savedItemRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        savedItemRecyclerView.adapter = savedItemAdapter
+        savedItemRecyclerView.adapter = savedNewsAdapter
 
-        savedViewModel.savedNewsLiveData.observe(
-            viewLifecycleOwner,
-            {
-                savedData -> updateUI(savedData)
-            }
-        )
+        CoroutineScope(Dispatchers.Main).launch {
 
-    }
+            presenter.getTopNewsSaved()
 
-    override fun onResume() {
-        super.onResume()
-        savedItemAdapter.setOnItemClickListener(object : SavedItemAdapter.OnItemClickListener {
+            updateNews(topNewsSaved.getTopNewsSaved())
+
+        }
+
+        savedNewsAdapter.setOnItemClickListener(object : SavedNewsAdapter.OnItemClickListener {
             override fun onItemClick(v: View?, pos: Int) {
                 CoroutineScope(Dispatchers.Main).launch {
-                    savedViewModel.setTopNewsItemPosition(pos)
-                    createFragment(SavedItemDetail.newInstance())
+                    //savedViewModel.setTopNewsItemPosition(pos)
+                    //createFragment(SavedItemDetail.newInstance())
                 }
             }
 
         })
     }
 
-    private fun updateUI(item : List<Saved>) {
-        savedItemAdapter.submitList(item)
-    }
 
     private fun createFragment(view: Fragment) {
         requireActivity()
@@ -96,5 +93,9 @@ class SavedItem : Fragment() {
         fun newInstance() : SavedItem {
             return SavedItem()
         }
+    }
+
+    override fun updateNews(topNews: List<SavedModel?>?) {
+        savedNewsAdapter.submitList(topNews)
     }
 }
