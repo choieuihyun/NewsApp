@@ -6,8 +6,9 @@ import com.example.domain.model.SavedModel
 
 interface MainContract {
 
-    interface TopNewsView { // view에서 ui update를 하기위한 method 선언
-        fun updateNews(topNews: List<ArticleModel?>?) // 모르겠다
+    interface TopNewsView<T> { // view에서 ui update를 하기위한 method 선언
+        fun updateNews(topNews: List<T?>?)
+        //fun updateNews(topNews: List<T?>?)
     }
 
     interface TopNewsPresenter { // business logic 선언
