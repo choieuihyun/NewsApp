@@ -1,4 +1,4 @@
-package com.campusmap.android.wanted_preonboarding_android.adapter
+package com.example.presentation.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.campusmap.android.wanted_preonboarding_android.databinding.SavedItemListBinding
+import com.bumptech.glide.Glide
+import com.example.presentation.databinding.SavedItemListBinding
+import com.example.domain.model.SavedModel
+import com.example.presentation.R
 
-import com.campusmap.android.wanted_preonboarding_android.roomdb.Saved
-
-class SavedItemAdapter : ListAdapter<Saved, SavedItemAdapter.SavedItemViewHolder>(savedItemCallback) {
+class SavedNewsAdapter : ListAdapter<SavedModel, SavedNewsAdapter.SavedItemViewHolder>(savedItemCallback) {
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, pos: Int)
@@ -23,13 +24,18 @@ class SavedItemAdapter : ListAdapter<Saved, SavedItemAdapter.SavedItemViewHolder
         itemClickListener = listener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedItemAdapter.SavedItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedItemViewHolder {
         val binding = SavedItemListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return SavedItemViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: SavedItemAdapter.SavedItemViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: SavedItemViewHolder, position: Int) {
+        val item = getItem(position)
+        holder.bind(item)
+        Glide.with(holder.itemView)
+            .load(item.urlToImage)
+            .error(R.drawable.no_image)
+            .into(holder.binding.imageView)
     }
 
     inner class SavedItemViewHolder(val binding: SavedItemListBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
@@ -38,8 +44,10 @@ class SavedItemAdapter : ListAdapter<Saved, SavedItemAdapter.SavedItemViewHolder
             binding.root.setOnClickListener(this)
         }
 
-        fun bind(item : Saved) {
-            binding.savedItemList = item
+        fun bind(item : SavedModel) {
+            binding.title.text = item.title
+            binding.author.text = item.author
+            binding.publishedAt.text = item.publishedAt
         }
 
         override fun onClick(v: View?) {
@@ -56,11 +64,11 @@ class SavedItemAdapter : ListAdapter<Saved, SavedItemAdapter.SavedItemViewHolder
 
     companion object {
 
-        private val savedItemCallback = object : DiffUtil.ItemCallback<Saved>() {
-            override fun areItemsTheSame(oldItem: Saved, newItem: Saved): Boolean {
+        private val savedItemCallback = object : DiffUtil.ItemCallback<SavedModel>() {
+            override fun areItemsTheSame(oldItem: SavedModel, newItem: SavedModel): Boolean {
                 return oldItem.hashCode() == newItem.hashCode()
             }
-            override fun areContentsTheSame(oldItem: Saved, newItem: Saved): Boolean {
+            override fun areContentsTheSame(oldItem: SavedModel, newItem: SavedModel): Boolean {
                 return oldItem == newItem
             }
 
