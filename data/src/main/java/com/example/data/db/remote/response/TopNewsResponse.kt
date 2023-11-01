@@ -1,4 +1,4 @@
-package com.campusmap.android.wanted_preonboarding_android.data.db.remote.response
+package com.example.data.db.remote.response
 
 
 import com.google.gson.annotations.SerializedName

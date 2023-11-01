@@ -1,4 +1,4 @@
-package com.example.presentation.topnews
+package com.example.presentation.topNews
 
 import android.app.Activity
 import android.os.Bundle
@@ -16,9 +16,9 @@ import com.example.presentation.adapter.TopNewsAdapter
 import com.example.presentation.databinding.TopnewsBinding
 import com.example.presentation.presenter.MainActivity
 import com.example.presentation.presenter.MainContract
-import com.example.presentation.presenter.TopNewsPresenter
 import com.example.domain.model.ArticleModelParcelize
 import com.example.domain.usecase.GetTopNewsUseCase
+import com.example.presentation.topNewsDetail.TopNewsDetail
 import kotlinx.coroutines.*
 
 
@@ -85,6 +85,7 @@ class TopNews : Fragment(), MainContract.TopNewsView<ArticleModel> {
 
                     val item = topNews.getTopNews()
 
+                    // 이렇게 하는 구조가 올바른 구조는 아니라 생각함. 이걸 presenter에서 콜백하는게 올바른 구조일라나?
                     val article = ArticleModelParcelize(
                         title = item?.get(pos)?.title,
                         author = item?.get(pos)?.author,

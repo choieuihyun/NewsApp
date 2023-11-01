@@ -1,21 +1,14 @@
-package com.campusmap.android.wanted_preonboarding_android
+package com.example.presentation.presenter
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.app.ActionBar
-import com.campusmap.android.wanted_preonboarding_android.news.TopNews
+import com.example.presentation.R
+import com.example.presentation.topNews.TopNewsFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        // 여기 practice2 추가요
-
-        // practice 변경사항
-        // practice 두 번째 변경사항
-
-        //localbranch 전 branch
 
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
 

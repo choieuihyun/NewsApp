@@ -1,8 +1,8 @@
-package com.campusmap.android.wanted_preonboarding_android.data.db.local.dao
+package com.example.data.db.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.campusmap.android.wanted_preonboarding_android.data.db.local.entity.Saved
+import com.example.data.db.local.entity.Saved
 
 
 @Dao
@@ -13,10 +13,10 @@ interface SavedDao {
             fun getAllSavedNewsLiveData() : LiveData<List<Saved>>
 
         @Query("SELECT * FROM saved")
-            fun getAllSavedNewsData() : List<Saved>
+            fun getTopNewsSavedList() : List<Saved>
 
         @Query("SELECT title FROM saved WHERE title = :title")
-            fun getSavedNewsData(title: String) : String
+            fun getTopNewsSaved(title: String) : String
 
 // https://developer.android.com/training/data-storage/room/accessing-data?hl=ko
 

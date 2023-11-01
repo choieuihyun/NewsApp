@@ -1,4 +1,4 @@
-package com.campusmap.android.wanted_preonboarding_android.data.db.remote.api
+package com.example.data.db.remote.api
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 
-object RetrofitClient { // singleton
+object RetrofitClient { // singletonv 근데 이거 안쓰고있는데? 이거 왜 만든거냐?
 
     var BASE_URL = "https://newsapi.org/v2/"
 

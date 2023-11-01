@@ -1,20 +1,19 @@
-package com.campusmap.android.wanted_preonboarding_android
+package com.example.presentation.topNews
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.campusmap.android.wanted_preonboarding_android.databinding.TopnewsFragmentBinding
-import com.campusmap.android.wanted_preonboarding_android.category.Categories
-import com.campusmap.android.wanted_preonboarding_android.saved.SavedItem
-import com.campusmap.android.wanted_preonboarding_android.news.TopNews
+import com.example.presentation.R
+import com.example.presentation.categories.Categories
+import com.example.presentation.databinding.TopnewsFragmentBinding
+import com.example.presentation.saved.SavedItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class TopNewsFragment : Fragment() {
+class TopNewsFragment() : Fragment(){
 
     private lateinit var binding: TopnewsFragmentBinding
 
@@ -29,7 +28,8 @@ class TopNewsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.topnews_fragment, container, false)
+        //binding = DataBindingUtil.inflate(inflater, R.layout.topnews_fragment, container, false)
+        binding = TopnewsFragmentBinding.inflate(inflater)
 
         return binding.root
     }
@@ -102,5 +102,7 @@ class TopNewsFragment : Fragment() {
             return TopNewsFragment()
         }
     }
+
+
 
 }
