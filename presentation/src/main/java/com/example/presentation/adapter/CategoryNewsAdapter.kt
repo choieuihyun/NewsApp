@@ -1,4 +1,4 @@
-package com.campusmap.android.wanted_preonboarding_android.adapter
+package com.example.presentation.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,10 +7,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.campusmap.android.wanted_preonboarding_android.databinding.CategoriesItemListBinding
-import com.campusmap.android.wanted_preonboarding_android.retrofit.Article
+import com.bumptech.glide.Glide
+import com.example.domain.model.ArticleModel
+import com.example.presentation.R
+import com.example.presentation.databinding.CategoriesItemListBinding
 
-class CategoryItemAdapter : ListAdapter<Article, CategoryItemAdapter.CategoryItemViewHolder>(TopNewsCallback) {
+class CategoryNewsAdapter : ListAdapter<ArticleModel, CategoryNewsAdapter.CategoryItemViewHolder>(
+    TopNewsCallback
+) {
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, pos: Int)
@@ -29,7 +33,12 @@ class CategoryItemAdapter : ListAdapter<Article, CategoryItemAdapter.CategoryIte
     }
 
     override fun onBindViewHolder(holder: CategoryItemViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val item = getItem(position)
+        holder.bind(item)
+        Glide.with(holder.itemView)
+            .load(item.urlToImage)
+            .error(R.drawable.no_image)
+            .into(holder.binding.categoriesImageView)
     }
 
 
@@ -39,8 +48,10 @@ class CategoryItemAdapter : ListAdapter<Article, CategoryItemAdapter.CategoryIte
             binding.root.setOnClickListener(this)
         }
 
-        fun bind(item: Article) {
-            binding.categoriesItemList = item
+        fun bind(item: ArticleModel) {
+            binding.categoriesTitle.text = item.title
+            binding.categoriesAuthor.text = item.author
+            binding.categoriesPublishedAt.text = item.publishedAt
         }
 
         override fun onClick(v: View?) {
@@ -61,12 +72,12 @@ class CategoryItemAdapter : ListAdapter<Article, CategoryItemAdapter.CategoryIte
 
     companion object {
 
-        private val TopNewsCallback = object : DiffUtil.ItemCallback<Article>() {
-            override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
+        private val TopNewsCallback = object : DiffUtil.ItemCallback<ArticleModel>() {
+            override fun areItemsTheSame(oldItem: ArticleModel, newItem: ArticleModel): Boolean {
                 return oldItem.hashCode() == newItem.hashCode()
             }
 
-            override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
+            override fun areContentsTheSame(oldItem: ArticleModel, newItem: ArticleModel): Boolean {
                 return oldItem == newItem
             }
 
