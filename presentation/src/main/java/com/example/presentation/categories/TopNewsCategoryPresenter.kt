@@ -1,12 +1,14 @@
-package com.example.presentation.presenter
+package com.example.presentation.categories
 
+import com.example.domain.model.ArticleModel
 import com.example.domain.usecase.GetTopNewsCategoryUseCase
+import com.example.presentation.presenter.MainContract
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TopNewsCategoryPresenter constructor(
-    private var view: MainContract.TopNewsView,
+    private var view: MainContract.TopNewsView<ArticleModel>,
     private val useCase: GetTopNewsCategoryUseCase
 ) : MainContract.TopNewsCategoryPresenter {
 
@@ -22,8 +24,5 @@ class TopNewsCategoryPresenter constructor(
 
     }
 
-    override suspend fun savedTopNewsCategory() {
-        TODO("Not yet implemented")
-    }
 
 }
