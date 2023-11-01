@@ -9,21 +9,21 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.repositoryimpl.TopNewsRepositoryImpl
+import com.example.domain.model.ArticleModel
+import com.example.domain.model.ArticleModelParcelize
 import com.example.presentation.R
 import com.example.presentation.adapter.CategoryNewsAdapter
 import com.example.presentation.databinding.CategoriesItemBinding
-import com.example.domain.model.ArticleModel
-import com.example.domain.repository.TopNewsRepository
 import com.example.domain.usecase.GetTopNewsCategoryUseCase
+import com.example.presentation.categoriesDetail.CategoryNewsDetail
 import com.example.presentation.presenter.MainContract
-import com.example.presentation.presenter.TopNewsCategoryPresenter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 import java.io.Serializable
 
-class CategoriesNews : Fragment(), MainContract.TopNewsView {
+class CategoriesNews : Fragment(), MainContract.TopNewsView<ArticleModel> {
 
     private lateinit var binding: CategoriesItemBinding
     private lateinit var categoryNewsRecyclerView: RecyclerView
@@ -75,7 +75,23 @@ class CategoriesNews : Fragment(), MainContract.TopNewsView {
 
         categoryNewsAdapter.setOnItemClickListener(object: CategoryNewsAdapter.OnItemClickListener {
             override fun onItemClick(v: View?, pos: Int) {
-                createFragment(CategoryNewsDetail.newInstance())
+
+                CoroutineScope(Dispatchers.Main).launch {
+
+                    val item = categoryNews.getTopNewsCategory()
+
+                    // 이렇게 하는 구조가 올바른 구조는 아니라 생각함. 이걸 presenter에서 콜백하는게 올바른 구조일라나?
+                    val article = ArticleModelParcelize(
+                        title = item?.get(pos)?.title,
+                        author = item?.get(pos)?.author,
+                        publishedAt = item?.get(pos)?.publishedAt,
+                        urlToImage = item?.get(pos)?.urlToImage,
+                        content = item?.get(pos)?.content,
+                    )
+
+                    createFragment(CategoryNewsDetail.newInstance(article))
+                }
+
             }
 
         })
