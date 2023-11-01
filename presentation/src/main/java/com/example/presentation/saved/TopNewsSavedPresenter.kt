@@ -1,8 +1,8 @@
-package com.example.presentation.presenter
+package com.example.presentation.saved
 
-import android.util.Log
 import com.example.domain.model.SavedModel
 import com.example.domain.usecase.GetTopNewsSavedUseCase
+import com.example.presentation.presenter.MainContract
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,13 +24,6 @@ class TopNewsSavedPresenter constructor(
 
     }
 
-    override suspend fun addTopNewsSaved(saved: SavedModel) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun deleteTopNewsSaved(title: String) {
-        TODO("Not yet implemented")
-    }
 
 
 }
