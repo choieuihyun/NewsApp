@@ -1,24 +1,22 @@
 package com.example.presentation.saved
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.repositoryimpl.TopNewsRepositoryImpl
 import com.example.domain.model.SavedModel
+import com.example.domain.model.SavedModelParcelize
 import com.example.domain.usecase.GetTopNewsSavedUseCase
 import com.example.presentation.R
 import com.example.presentation.adapter.SavedNewsAdapter
 import com.example.presentation.databinding.SavedBinding
-import com.example.presentation.databinding.SavedItemListBinding
 import com.example.presentation.presenter.MainActivity
 import com.example.presentation.presenter.MainContract
-import com.example.presentation.presenter.TopNewsSavedPresenter
+import com.example.presentation.savedDetail.SavedItemDetail
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -71,9 +69,23 @@ class SavedItem : Fragment(), MainContract.TopNewsView<SavedModel> {
 
         savedNewsAdapter.setOnItemClickListener(object : SavedNewsAdapter.OnItemClickListener {
             override fun onItemClick(v: View?, pos: Int) {
+
                 CoroutineScope(Dispatchers.Main).launch {
-                    //savedViewModel.setTopNewsItemPosition(pos)
-                    //createFragment(SavedItemDetail.newInstance())
+
+                    val item = topNewsSaved.getTopNewsSaved()
+
+                    val saved = SavedModelParcelize(
+                        id = item?.get(pos)?.id,
+                        title = item?.get(pos)?.title,
+                        author = item?.get(pos)?.author,
+                        publishedAt = item?.get(pos)?.publishedAt,
+                        urlToImage = item?.get(pos)?.urlToImage,
+                        content = item?.get(pos)?.content,
+                        savedButton = item?.get(pos)?.savedButton
+                    )
+
+                    createFragment(SavedItemDetail.newInstance(saved))
+
                 }
             }
 
