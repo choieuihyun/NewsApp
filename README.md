@@ -9,12 +9,55 @@
 
 # 프로젝트 전체 구조
 
-- MVVM + LiveData + ViewModel + RoomDB을 사용한 MVVM 구조 -> MVP 아키텍처로 리팩토링중.
-- 부연 설명 : 잘 이해하지 못한 상태로 만들었던 앱이기에 지금은 조금이나마 알 것 같아 리팩토링 하고있습니다.
+- 기존의 어정쩡한 MVVM 구조 -> MVP 아키텍처로 리팩토링.
+- 부연 설명 : 잘 이해하지 못한 상태로 만들었던 앱이기에 다시 만들어보고자 리팩토링 하였습니다.
+
+<img src="https://github.com/choieuihyun/NewsApp/assets/59135621/38a9c8e0-945d-485b-b393-2c60a9ecca81.png" width="300" height="300"/>
+
 
 ## 프로젝트 세부 구조
 
-- 리팩토링중입니다.
+#### data layer
+
+```bash
+app
+
+├── data
+│   │ 
+│   ├── dataSource
+│       │ 
+│       ├── remote
+│       │ 
+│       └── local
+│
+│   │ 
+│   ├── db
+│   │ 
+│   ├── mapper
+│   │
+│   └── repositoryImpl
+│
+├── domain
+│   ├── train.py
+│   ├── classify.py
+│   ├── model.py
+│   └── dataset.py
+└── domain
+    ├── train.py
+    ├── classify.py
+    ├── model.py
+    └── dataset.py
+
+* Data layer는 dataSource, db, mapper, repositoryImpl(repository 구현부)로 구성하였으며
+  세부적으로는 Local, Remote로 나누었습니다. 
+
+  * Local : RoomDB
+  * Remote : https://newsapi.org의 API + Retrofit
+
+* Domain layer는 model, repository, usecase로 구성하였습니다.
+
+  * model : data layer의 entity를 뷰에 띄워줄 데이터로 변환해주는 model 데이터 클래스
+```
 
 # 개발 도구
 
