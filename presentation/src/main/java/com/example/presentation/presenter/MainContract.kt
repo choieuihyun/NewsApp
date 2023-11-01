@@ -1,7 +1,6 @@
 package com.example.presentation.presenter
 
-import android.content.Context
-import com.example.domain.model.ArticleModel
+import android.content.SharedPreferences
 import com.example.domain.model.SavedModel
 
 interface MainContract {
@@ -66,5 +65,13 @@ interface MainContract {
         suspend fun deleteTopNewsSaved(title: String)
 
     }
+
+    // 즐겨찾기 버튼 체크 유무
+    interface TopNewsSharedPreference {
+
+        suspend fun getSharedPreference(): SharedPreferences
+
+    }
+
 
 }
