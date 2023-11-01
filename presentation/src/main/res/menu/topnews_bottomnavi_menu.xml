@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- <a href="https://www.flaticon.com/kr/free-icons/" title="결과 아이콘"> A+ 결과 아이콘  제작자: Freepik - Flaticon</a> -->
+
+    <item android:id="@+id/top_news"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:icon="@drawable/topnews"
+        android:title="@string/top_news"/>
+
+    <item android:id="@+id/categories"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:icon="@drawable/categories"
+        android:title="@string/categories"/>
+
+    <item android:id="@+id/saved"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:icon="@drawable/saved"
+        android:title="@string/saved"/>
+
+
+
+
+</menu>
