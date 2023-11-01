@@ -1,38 +1,77 @@
 package com.example.presentation.presenter
 
-import android.content.Context
-import com.example.domain.model.ArticleModel
+import android.content.SharedPreferences
 import com.example.domain.model.SavedModel
 
 interface MainContract {
 
-    interface TopNewsView { // view에서 ui update를 하기위한 method 선언
-        fun updateNews(topNews: List<ArticleModel?>?) // 모르겠다
+    interface TopNewsView<T> { // view에서 ui update를 하기위한 method 선언
+
+        fun updateNews(topNews: List<T?>?)
+
     }
 
     interface TopNewsPresenter { // business logic 선언
-        suspend fun getTopNews(context: Context)
-        suspend fun savedTopNews(saved: SavedModel)
+        
+        suspend fun getTopNews()
+
+
     }
 
+    interface TopNewsDetailAddPresenter { // TopNewsPresenter 내부에서 분리.
 
-    interface Saved { // model에서 presenter를 참조 하고 있지 않기 때문에 Saved interface안에 interface를 생성해서 presenter에서 상속받도록 함.
+            suspend fun addTopNews(saved: SavedModel)
 
     }
+
+    interface TopNewsDetailDeletePresenter {
+
+        suspend fun deleteTopNews(title: String)
+
+    }
+
 
     interface TopNewsCategoryPresenter {
-        suspend fun getTopNewsCategory()
-        suspend fun savedTopNewsCategory()
+        suspend fun getTopNewsCategory(category: String)
+
     }
 
-    interface GetTopNewsSavedPresenter {
-        suspend fun getTopNewsSaved(saved: SavedModel)
-        suspend fun savedTopNews(saved: SavedModel)
+    interface TopNewsCategoryDetailAddPresenter {
+
+        suspend fun addTopNewsCategory(saved: SavedModel)
     }
 
+    interface TopNewsCategoryDetailDeletePresenter {
+
+        suspend fun deleteTopNewsCategory(title: String)
+
+    }
+
+
+    // 즐겨찾기
     interface TopNewsSavedPresenter {
-        fun getTopNewsSaved()
-        suspend fun deleteTopNewsSaved()
+
+        suspend fun getTopNewsSaved()
+
     }
+
+    interface TopNewsSavedDetailAddPresenter {
+        suspend fun addTopNewsSaved(saved: SavedModel)
+
+    }
+
+    interface TopNewsSavedDetailDeletePresenter {
+
+        suspend fun deleteTopNewsSaved(title: String)
+
+    }
+
+    // 즐겨찾기 버튼 체크 유무
+    interface TopNewsSharedPreference {
+
+        suspend fun getSharedPreference(): SharedPreferences
+
+    }
+
 
 }
