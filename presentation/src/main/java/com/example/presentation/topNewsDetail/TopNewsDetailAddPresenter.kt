@@ -1,21 +1,22 @@
-package com.example.presentation.presenter
+package com.example.presentation.topNewsDetail
 
 import com.example.domain.model.SavedModel
 import com.example.domain.usecase.AddTopNewsSavedUseCase
+import com.example.presentation.presenter.MainContract
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class TopNewsDetailPresenter constructor(
-    private val useCase: AddTopNewsSavedUseCase
-) : MainContract.TopNewsPresenter.TopNewsDetailPresenter {
+class TopNewsDetailAddPresenter constructor(
+    private val addUseCase: AddTopNewsSavedUseCase,
+) : MainContract.TopNewsDetailAddPresenter {
 
     override suspend fun addTopNews(saved: SavedModel) {
 
         CoroutineScope(Dispatchers.IO).launch {
 
-            useCase(saved)
+            addUseCase(saved)
 
         }
 
